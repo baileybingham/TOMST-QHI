@@ -19,4 +19,5 @@ All data in the "year" folders is stored as raw data from the TOMST. Scripts for
 ## Scripts
 
 ### Acknowledgments
-These data were collected by various members of Team Shrub. This repo was prepared by Bailey Bingham and Jeremy Borderieux. 
+These data were collected by various members of Team Shrub on Qikiqtaruk- Herschel Island located off the north coast of the Yukon in the Tariuq (Beaufort Sea). Qikiqtaruk lies within the Inuvialuit Settlement Region and is part of Qikiqtaruk Territorial Park, which is co-managed by the Inuvialuit and the Yukon Government. The island holds deep cultural and historical significance for the Inuvialuit and it remains an active and meaningful part of the Inuvialuit homeland. 
+This repo was prepared by Bailey Bingham and Jeremy Borderieux.  
