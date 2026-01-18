@@ -13,8 +13,9 @@ Following July 2022, the TOMST have remained deployed in the field and members o
 All data in the "year" folders is stored as raw data from the TOMST. Scripts for pre-processing and data organization are available in the Scripts section below. 
 
 ### TOMST Graveyard
-* In 2023, TOMST02 (serial#: 94217233) was lost in the ALD at phenology ridge. Therefore the most recent TOMST02 data is from 2022. 
-* In 2025, TOMST11 (serial#: 94217225) and TOMST14 (serial#: 94217222) were unaccounted for at the end of the field season. 
+* In 2023, TOMST02 (serial#: 94217233) was lost in the ALD at phenology ridge. Therefore the most recent TOMST02 data is from 2022.
+* On June 13 2024 TOMST14 (serial#: 94217222) broke. The data up to that date is available in the 2024 folder. 
+* In 2025, TOMST11 (serial#: 94217225) was unaccounted for at the end of the field season. 
 
 ## Scripts
 
