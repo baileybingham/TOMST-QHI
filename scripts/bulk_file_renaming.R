@@ -48,4 +48,32 @@ for (folder_path in folders) {
 
 print("Renaming process complete.")
 
-###DO NOT RUN MORE THAN ONCE!!! You will just keep adding the TOMST## to the file name. 
+#######DO NOT RUN MORE THAN ONCE!!! You will just keep adding the TOMST## to the file name. 
+##########################################################################################
+library(fs)
+# 1. Define your main directory (where the subfolders are located)
+base_dir <- "data/2023/"
+
+# 2. Define the target directory (the parent folder where files will go)
+target_dir <- "data/2023/"
+
+# 3. Find all files within subdirectories (recursive=TRUE)
+#    full.names=TRUE gives the complete path to each file
+all_files <- list.files(path = parent_dir, recursive = TRUE, full.names = TRUE)
+
+# 4. Loop through the files and copy/move them to the target folder
+for (file_path in all_files) {
+  # Get just the filename
+  file_name <- basename(file_path)
+  
+  # Construct the destination path
+  destination_path <- file.path(target_dir, file_name)
+  
+  # Copy the file (use file.rename() to move instead of copy)
+  file.copy(from = file_path, to = destination_path, overwrite = TRUE) # overwrite=TRUE if files with same name exist
+  
+  # Optional: Remove original file after copying (if you want to move, not copy)
+  # file.remove(file_path)
+}
+
+print("Files extracted successfully!")
