@@ -13,13 +13,14 @@
 ### This site was referenced when annotating and may be a helpful read to 
 ### understand myClim: https://cran.r-project.org/web/packages/myClim/vignettes/myclim-demo.html
 
-#### download packages  ####
+####################### Download packages  ####################################
 library(myClim) ## logger data reading
 library(foreach) ## efficient loop
 library(data.table) ## efficient data.frame  
 library(stringr) ## efficient character manipulation
 library(lubridate) ## manipulate date_time
 
+###################### Begin data upload ######################################
 ###############################################################################
 ############## Upload TOMST data from most recent year ########################
 
@@ -41,10 +42,12 @@ list_files <- list.files("data/2025/",full.names = F)
 # serial number part of the file name. This allows us to use metadata from the file 
 # names as a grouping variable in future analysis.
 locality_name <-  str_extract(list_files, "TOMST_[:digit:]+_QHI") 
+serial_numbers <- str_extract(list_files, "(?<=data_)\\d{8}")
 
 # Assign the extracted TOMST IDs (e.g., TOMST_01_QHI) to their respective paths.
 files_table <- data.table(path = list_path,
                           locality_id = locality_name ,  
+                          serial_number = serial_numbers,
                           data_format = "TOMST") # this adds a column specifying that this is TOMST data
                                                  # (in case you merge it with HOBO data later)
 
@@ -71,50 +74,69 @@ if(length(missing_tomst) > 0) {
 
 ################################################################################
 ############### Upload missing files from an older year folder #################
-if(length(missing_tomst) > 0) {
-  message("--- Checking 2024 folder for missing files ---")
-  # Scan the 2024 folder for potential backup files
-  # Change 2024 to reflect the folder year you want
-  path_2024 <- "data/2024/"  
-  list_path_24 <- list.files("data/2024/", full.names = TRUE)
-  list_files_24 <- list.files("data/2024/", full.names = FALSE)
-  
-  # This extracts the IDs just like we did for 2025 and creates a reference table
-  locality_name_24 <- str_extract(list_files_24, "TOMST_[:digit:]+_QHI")
-  
-  files_table_2024 <- data.table(path = list_path_24,
-                                 locality_id = locality_name_24,
-                                 data_format = "TOMST")
-  
-  # Identify which missing IDs are available in 2024
-  found_in_2024 <- intersect(missing_tomst, files_table_2024$locality_id)
-  still_missing <- setdiff(missing_tomst, found_in_2024)
-  
-  # Report Available/Missing
-  if(length(found_in_2024) > 0) {
-    message("The following TOMST IDs are available in 2024.")
-    print(found_in_2024)
-  }
-  if(length(still_missing) > 0) {
-    message("The following TOMST IDs remain missing:")
-    print(still_missing)
-  }
-}
 
-###### If you would like to bind the missing files found in the 2024 script,
-###### you can use this script: 
-if(length(found_in_2024) > 0) {
-  recovered_files <- files_table_2024[locality_id %in% found_in_2024]
-  files_table <- rbind(files_table, recovered_files)
-  message(paste("Successfully added", nrow(recovered_files), "files from 2024 to the data table."))
-}
-    
+#if(length(missing_tomst) > 0) {
+#  message("--- Checking 2024 folder for missing files ---")
+#  # Scan the 2024 folder for potential backup files
+#  # Change 2024 to reflect the folder year you want
+#  path_2024 <- "data/2024/"  
+#  list_path_24 <- list.files("data/2024/", full.names = TRUE)
+#  list_files_24 <- list.files("data/2024/", full.names = FALSE)
+#  
+#  # This extracts the IDs just like we did for 2025 and creates a reference table
+#  locality_name_24 <- str_extract(list_files_24, "TOMST_[:digit:]+_QHI")
+#  
+#  files_table_2024 <- data.table(path = list_path_24,
+#                                 locality_id = locality_name_24,
+#                                 data_format = "TOMST")
+#  
+#  # Identify which missing IDs are available in 2024
+#  found_in_2024 <- intersect(missing_tomst, files_table_2024$locality_id)
+#  still_missing <- setdiff(missing_tomst, found_in_2024)
+  
+#  # Report Available/Missing
+#  if(length(found_in_2024) > 0) {
+#    message("The following TOMST IDs are available in 2024.")
+#    print(found_in_2024)
+#  }
+#  if(length(still_missing) > 0) {
+#    message("The following TOMST IDs remain missing:")
+#    print(still_missing)
+#  }
+#}
+
+###### If you want to bind the missing files found in the 2024 script,
+###### you can use this script. ONLY DO THIS ONCE or you will add duplicates: 
+#files_table_2024[, serial_number := stringr::str_extract(basename(path), "(?<=data_)\\d{8}")]
+#if(length(found_in_2024) > 0) {
+#  recovered_files <- files_table_2024[locality_id %in% found_in_2024]
+#  files_table <- rbind(files_table, recovered_files)
+#  files_table <- files_table[order(locality_id)]
+#  locality_name <- files_table$locality_id
+#  message(paste("Successfully added", nrow(recovered_files), "files from 2024 to the data table."))
+#}
+
 ### Check for missing files again ###
+# Identify which expected IDs are NOT present in your files_table
+#missing_tomst <- setdiff(expected_ids, files_table$locality_id)
 
+# Print the results to the console
+#if(length(missing_tomst) > 0) {
+#  message("The following ", length(missing_tomst), " TOMST files are missing:")
+#  print(missing_tomst)
+#} else {
+#  message("All TOMST files (01-40) are present.")
+#}
 
+############# All available files should now be accounted for #################
+# Clean up temporary objects not needed for further analysis
+#rm(files_table_2024, recovered_files, expected_ids, found_in_2024, list_files_24, 
+#   list_path_24, locality_name_24, missing_tomst, path_2024, still_missing, list_files, list_path)
+ 
+#################### Begin Data Pre-Processing ################################
+###############################################################################
 
-    
-### Correct for timezone ###
+####################### Correct for timezone ##################################
 # Next is a VERY important line, correcting the timezone for each locality ID
 #(which is already linked to the paths of the file). Note that all TOMST are 
 # automatically set to Coordinated Universal Time (UTC) and this needs to be 
@@ -127,10 +149,23 @@ locality_metadata <-  data.table(locality_id = locality_name ,
 # Next, join the file paths with the metadata in a single myClim object. 
 # This also automatically cleans the data according to the myClim package. 
 # This can take a little time. It will produce a log telling you how it cleaned the data.
-tms.f <- mc_read_data(files_table,locality_metadata) 
+tms.f <- mc_read_data(files_table,locality_metadata) #this will produce a report. 
+
+# GETTING LOTS OF ERRORS SAYING: 
+# 1: In .prep_clean_check_different_values_in_duplicated(locality_id,  ... :
+# In logger 94217246 are different values of TMS_T1 in same time.
+# 
+# Jeremy, I got to here and I am getting a ton of warnings that I can't figure 
+# out how to fix. Can you help?
+#
+#
+#
+#
+#
+#
+
 
 #### Check the newly created myClim object by summarizing some of the data ####
-
 # Returns the number of localities, loggers and sensors in myClim object.
 # Note that there are 4 sensors on each TOMST logger. Check that there 
 # are the expected number of loggers and sensors.
