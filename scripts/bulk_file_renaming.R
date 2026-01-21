@@ -269,8 +269,6 @@ old_files <- list.files(path = folder_path,
  
  old_names <- list.files(path = folder_path, full.names = TRUE)
  
- old_names <- list.files()
- 
  # 2. Use gsub to replace "TOMST" with "TOMST_"
  # This looks for the literal string "TOMST" and adds the underscore
  new_names <- gsub("TOMST", "TOMST_", old_names)
@@ -280,3 +278,50 @@ old_files <- list.files(path = folder_path,
  
  # 4. Physically rename the files
  file.rename(from = old_names, to = new_names)
+ 
+ new_names <- gsub("_([0-9])_", "_0\\1_", old_names)
+ 
+ # 3. Preview and Rename
+ print(data.frame(Old = old_names, New = new_names))
+ file.rename(from = old_names, to = new_names)
+ 
+ files <- list.files(path = folder_path, full.names = TRUE)
+ sorted_files <- sort(files)
+ 
+ #############
+
+ old_names <- list.files(path = folder_path, full.names = TRUE)
+ 
+ # 2. Define the transformation
+ new_names <- sapply(old_names, function(filename) {
+   
+   # Regex to find: Day (1-2 digits), Month (3 letters), Year (4 digits)
+   # Example: "12Aug2024" -> (12)(Aug)(2024)
+   pattern <- "([0-9]{1,2})([A-Za-z]{3})([0-9]{4})"
+   
+   # Extract matches
+   matches <- regexec(pattern, filename)
+   parts <- regmatches(filename, matches)[[1]]
+   
+   # Check if a date was found
+   if (length(parts) < 4) return(filename)
+   
+   day <- parts[2]
+   month_str <- parts[3]
+   year <- parts[4]
+   
+   # Convert the date components into a standard Date object
+   # format = "%d%b%Y" matches day, abbreviated month, and 4-digit year
+   temp_date <- as.Date(paste0(day, month_str, year), format = "%d%b%Y")
+   
+   # Reformat the date to "YYYY_MM_DD"
+   new_date_str <- format(temp_date, "%Y_%m_%d")
+   
+   # Replace the old date string in the filename with the new one
+   gsub(pattern, new_date_str, filename)
+ })
+ 
+ # 3. Rename the files
+ # Recommend: View the mapping first with data.frame(old_names, new_names)
+ file.rename(from = old_names, to = new_names) 
+ 
