@@ -138,7 +138,7 @@ if(length(missing_tomst) > 0) {
 
 ####################### Correct for timezone ##################################
 # Next is a VERY important line, correcting the timezone for each locality ID
-#(which is already linked to the paths of the file). Note that all TOMST are 
+# (which is already linked to the paths of the file). Note that all TOMST are 
 # automatically set to Coordinated Universal Time (UTC) and this needs to be 
 # corrected for, or your days will not be correct. 
 # We correct by geopolitical timezone here, but you could also correct by solar 
@@ -148,7 +148,7 @@ locality_metadata <-  data.table(locality_id = locality_name ,
 
 # Next, join the file paths with the metadata in a single myClim object. 
 # This also automatically cleans the data according to the myClim package. 
-# This can take a little time. It will produce a log telling you how it cleaned the data.
+# This can take a little time. 
 tms.f <- mc_read_data(files_table,locality_metadata) #this will produce a report. 
 
 # GETTING LOTS OF ERRORS SAYING: 
@@ -199,7 +199,7 @@ tms.f <- mc_prep_crop(tms.f,start = as.POSIXct("2022-07-31", tz="UTC"))
 
 
 # You can also select out specific tomst to remove from your myCLim object.
-# For example, we could remove TOMST_14 and TOMST_8. revers =T tells mc_filter 
+# For example, we could remove TOMST_14 and TOMST_8. reverse =T tells mc_filter 
 # to exclude rather than keep these two TOMSTS. Remove the # to run this. 
 # tms.f_filtered <- mc_filter(tms.f,localities = c("TOMST_14_QHI","TOMST_08_QHI"),reverse = T )
 
