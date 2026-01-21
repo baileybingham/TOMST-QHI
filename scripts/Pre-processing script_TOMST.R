@@ -28,12 +28,12 @@ library(lubridate) ## manipulate date_time
 # Since full.names = T, it returns the full name including the relative path. 
 # Change the year to the most recent data year only after ensureing that files have
 # been uploaded with the correct file naming conventions. 
-list_path <- list.files("data/2025/",full.names = T) 
+list_path <- list.files("data/2024/",full.names = T) 
 
 # Scan the same folder but use full.names = F, so it only returns only the 
 # filenames without the directory path (e.g., "TOMST_01_QHI.csv"). 
 # This makes string manipulation easier in the next step.
-list_files <- list.files("data/2025/",full.names = F) 
+list_files <- list.files("data/2024/",full.names = F) 
 
 # Use the stringr package to extract data from the file name. 
 # In this case, we are extracting the "locality" name from each filename, 
@@ -46,8 +46,8 @@ serial_numbers <- str_extract(list_files, "(?<=data_)\\d{8}")
 
 # Assign the extracted TOMST IDs (e.g., TOMST_01_QHI) to their respective paths.
 files_table <- data.table(path = list_path,
-                          locality_id = locality_name ,  
-                          serial_number = serial_numbers,
+                          locality_id = locality_name,  
+                          #serial_number = serial_numbers,
                           data_format = "TOMST") # this adds a column specifying that this is TOMST data
                                                  # (in case you merge it with HOBO data later)
 
@@ -150,20 +150,6 @@ locality_metadata <-  data.table(locality_id = locality_name ,
 # This also automatically cleans the data according to the myClim package. 
 # This can take a little time. 
 tms.f <- mc_read_data(files_table,locality_metadata) #this will produce a report. 
-
-# GETTING LOTS OF ERRORS SAYING: 
-# 1: In .prep_clean_check_different_values_in_duplicated(locality_id,  ... :
-# In logger 94217246 are different values of TMS_T1 in same time.
-# 
-# Jeremy, I got to here and I am getting a ton of warnings that I can't figure 
-# out how to fix. Can you help?
-#
-#
-#
-#
-#
-#
-
 
 #### Check the newly created myClim object by summarizing some of the data ####
 # Returns the number of localities, loggers and sensors in myClim object.

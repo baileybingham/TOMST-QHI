@@ -5,6 +5,7 @@
 
 library (tidyverse)
 library (lubridate)
+library(stringr)
 
 # Define the base directory containing all 40 subfolders
 base_dir <- "data/2023/"
@@ -263,3 +264,19 @@ old_files <- list.files(path = folder_path,
    message("No files needed zero-padding.")
  }
  
+ #############################################################################
+ folder_path <- "data/2024/"
+ 
+ old_names <- list.files(path = folder_path, full.names = TRUE)
+ 
+ old_names <- list.files()
+ 
+ # 2. Use gsub to replace "TOMST" with "TOMST_"
+ # This looks for the literal string "TOMST" and adds the underscore
+ new_names <- gsub("TOMST", "TOMST_", old_names)
+ 
+ # 3. View the changes before applying them (optional but recommended)
+ print(data.frame(Old = old_names, New = new_names))
+ 
+ # 4. Physically rename the files
+ file.rename(from = old_names, to = new_names)
