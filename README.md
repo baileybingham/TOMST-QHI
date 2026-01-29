@@ -17,7 +17,7 @@ _When new raw data is available please add it to an appropriate year folder and 
 CSVs in the data folder are prepared data, including: 
 * 2025_TOMSTdata_preprocessed_daily.csv : 2022-2025 data that has been pre-processed and aggregated to **DAILY** values using _Pre-processing_script_TOMST.R_. Note that max and min are actually the 95th percentile and 5th percentile values.
 * 2025_TOMSTdata_preprocessed_monthly.csv : 2022-2025 data that has been pre-processed and aggregated to **MONTHLY** values using _Pre-processing_script_TOMST.R_. Note that max and min are actually the 95th percentile and 5th percentile values.
-* QHI_station_metadata.csv : Data about the TOMST locations, including lat, long, closest phenocam and more. 
+* TOMST_metadata.csv : Data about the TOMST locations, including lat, long, closest phenocam and more. 
 
 ### _TOMST Graveyard_
 * In 2023, TOMST_02 (serial#: 94217233) was lost in the ALD at phenology ridge. Therefore the most recent TOMST_02 data is from 2022.
