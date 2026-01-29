@@ -200,16 +200,17 @@ tms.f <- mc_filter(tms.f,localities = c("TOMST_14_QHI","TOMST_08_QHI"),reverse =
 # this data. 
 
 ## To do this, we need to specify a soiltype, so we will default to universal for now
-tms.calc <- mc_calc_vwc(tms.f, soiltype = "universal")
+# This will also calculate Volumetric Water Content 
+tms.calc <- mc_calc_vwc(tms.f, soiltype = "universal") #sensor name vwc_moisture
 
 ## Calculate virtual sensor with growing and freezing degree days
-tms.calc <- mc_calc_gdd(tms.calc, sensor = "TMS_T3",)
-tms.calc <- mc_calc_fdd(tms.calc, sensor = "TMS_T3")
+tms.calc <- mc_calc_gdd(tms.calc, sensor = "TMS_T3",) #sensor name gdd5
+tms.calc <- mc_calc_fdd(tms.calc, sensor = "TMS_T3") #sensor name fdd0
 
 ## Calculate virtual sensor to estimate snow presence using 2 cm air temperature.
 # This works by looking for times when the near ground temperature was 0*C, 
 # meaning that the sensor was under snow. 
-tms.calc <- mc_calc_snow(tms.calc, sensor = "TMS_T2")
+tms.calc <- mc_calc_snow(tms.calc, sensor = "TMS_T2") #sensor name "snow"
 
 #### This is the end of our standardized pre-processing. 
 #### You could export this now, using the following script: 
