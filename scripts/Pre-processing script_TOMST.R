@@ -16,9 +16,9 @@
 ####################### Download packages  ####################################
 library(myClim) ## logger data reading
 library(foreach) ## efficient loop
-library(data.table) ## efficient data.frame  
 library(stringr) ## efficient character manipulation
 library(lubridate) ## manipulate date_time
+library(tidyverse) #includes ggplot, tidyr, dplyr, etc. 
 
 ###################### Begin data upload ######################################
 ###############################################################################
@@ -28,12 +28,12 @@ library(lubridate) ## manipulate date_time
 # Since full.names = T, it returns the full name including the relative path. 
 # Change the year to the most recent data year only after ensureing that files have
 # been uploaded with the correct file naming conventions. 
-list_path <- list.files("data/2024/",full.names = T) 
+list_path <- list.files("data/2025/",full.names = T) 
 
 # Scan the same folder but use full.names = F, so it only returns only the 
 # filenames without the directory path (e.g., "TOMST_01_QHI.csv"). 
 # This makes string manipulation easier in the next step.
-list_files <- list.files("data/2024/",full.names = F) 
+list_files <- list.files("data/2025/",full.names = F) 
 
 # Use the stringr package to extract data from the file name. 
 # In this case, we are extracting the "locality" name from each filename, 
@@ -47,7 +47,7 @@ serial_numbers <- str_extract(list_files, "(?<=data_)\\d{8}")
 # Assign the extracted TOMST IDs (e.g., TOMST_01_QHI) to their respective paths.
 files_table <- data.table(path = list_path,
                           locality_id = locality_name,  
-                          #serial_number = serial_numbers,
+                          serial_number = serial_numbers,
                           data_format = "TOMST") # this adds a column specifying that this is TOMST data
                                                  # (in case you merge it with HOBO data later)
 
@@ -75,58 +75,58 @@ if(length(missing_tomst) > 0) {
 ################################################################################
 ############### Upload missing files from an older year folder #################
 
-#if(length(missing_tomst) > 0) {
-#  message("--- Checking 2024 folder for missing files ---")
-#  # Scan the 2024 folder for potential backup files
-#  # Change 2024 to reflect the folder year you want
-#  path_2024 <- "data/2024/"  
-#  list_path_24 <- list.files("data/2024/", full.names = TRUE)
-#  list_files_24 <- list.files("data/2024/", full.names = FALSE)
-#  
-#  # This extracts the IDs just like we did for 2025 and creates a reference table
-#  locality_name_24 <- str_extract(list_files_24, "TOMST_[:digit:]+_QHI")
-#  
-#  files_table_2024 <- data.table(path = list_path_24,
-#                                 locality_id = locality_name_24,
-#                                 data_format = "TOMST")
-#  
-#  # Identify which missing IDs are available in 2024
-#  found_in_2024 <- intersect(missing_tomst, files_table_2024$locality_id)
-#  still_missing <- setdiff(missing_tomst, found_in_2024)
+if(length(missing_tomst) > 0) {
+  message("--- Checking 2024 folder for missing files ---")
+  # Scan the 2024 folder for potential backup files
+  # Change 2024 to reflect the folder year you want
+  path_2024 <- "data/2024/"  
+  list_path_24 <- list.files("data/2024/", full.names = TRUE)
+  list_files_24 <- list.files("data/2024/", full.names = FALSE)
   
-#  # Report Available/Missing
-#  if(length(found_in_2024) > 0) {
-#    message("The following TOMST IDs are available in 2024.")
-#    print(found_in_2024)
-#  }
-#  if(length(still_missing) > 0) {
-#    message("The following TOMST IDs remain missing:")
-#    print(still_missing)
-#  }
-#}
+  # This extracts the IDs just like we did for 2025 and creates a reference table
+  locality_name_24 <- str_extract(list_files_24, "TOMST_[:digit:]+_QHI")
+  
+  files_table_2024 <- data.table(path = list_path_24,
+                                 locality_id = locality_name_24,
+                                 data_format = "TOMST")
+  
+  # Identify which missing IDs are available in 2024
+  found_in_2024 <- intersect(missing_tomst, files_table_2024$locality_id)
+  still_missing <- setdiff(missing_tomst, found_in_2024)
+
+  # Report Available/Missing
+  if(length(found_in_2024) > 0) {
+    message("The following TOMST IDs are available in 2024.")
+    print(found_in_2024)
+  }
+  if(length(still_missing) > 0) {
+    message("The following TOMST IDs remain missing:")
+    print(still_missing)
+  }
+}
 
 ###### If you want to bind the missing files found in the 2024 script,
 ###### you can use this script. ONLY DO THIS ONCE or you will add duplicates: 
-#files_table_2024[, serial_number := stringr::str_extract(basename(path), "(?<=data_)\\d{8}")]
-#if(length(found_in_2024) > 0) {
-#  recovered_files <- files_table_2024[locality_id %in% found_in_2024]
-#  files_table <- rbind(files_table, recovered_files)
-#  files_table <- files_table[order(locality_id)]
-#  locality_name <- files_table$locality_id
-#  message(paste("Successfully added", nrow(recovered_files), "files from 2024 to the data table."))
-#}
+files_table_2024[, serial_number := stringr::str_extract(basename(path), "(?<=data_)\\d{8}")]
+if(length(found_in_2024) > 0) {
+  recovered_files <- files_table_2024[locality_id %in% found_in_2024]
+  files_table <- rbind(files_table, recovered_files)
+  files_table <- files_table[order(locality_id)]
+  locality_name <- files_table$locality_id
+  message(paste("Successfully added", nrow(recovered_files), "files from 2024 to the data table."))
+}
 
 ### Check for missing files again ###
 # Identify which expected IDs are NOT present in your files_table
-#missing_tomst <- setdiff(expected_ids, files_table$locality_id)
+missing_tomst <- setdiff(expected_ids, files_table$locality_id)
 
 # Print the results to the console
-#if(length(missing_tomst) > 0) {
-#  message("The following ", length(missing_tomst), " TOMST files are missing:")
-#  print(missing_tomst)
-#} else {
-#  message("All TOMST files (01-40) are present.")
-#}
+if(length(missing_tomst) > 0) {
+  message("The following ", length(missing_tomst), " TOMST files are missing:")
+  print(missing_tomst)
+} else {
+  message("All TOMST files (01-40) are present.")
+}
 
 ############# All available files should now be accounted for #################
 # Clean up temporary objects not needed for further analysis
@@ -174,25 +174,28 @@ View (mc_info_clean(tms.f)) # Allows you to have a closer look at the data in a 
 
 # Uses the myClim package to create TWO raster plots of the data as a time series, 
 # visualizing overall patterns. The first plot shows temp and the second shows soil moisture.
+mc_plot_raster(tms.f) 
 # Look for anything strange-- for example, you will notice that Jan 2022 is showing as well
 # above 0*C. This is because the TOMST were manufactured around then, and started temp recordings
 # immediately. These temps are from the factory. 
-mc_plot_raster(tms.f) 
 
 # Given the above finding, let's crop the TOMST time series to when they were installed.
 # From the time series, we can guess that this was in July 2022-- but we should try to confirm this.  
 tms.f <- mc_prep_crop(tms.f,start = as.POSIXct("2022-07-31", tz="UTC"))  
 
+# You can also make a time series for a single TOMST. Here is an example with TOMST_09
+mc_plot_line(mc_filter(tms.f, localities =  "TOMST_09_QHI")) 
 
-# You can also select out specific tomst to remove from your myCLim object.
-# For example, we could remove TOMST_14 and TOMST_8. reverse =T tells mc_filter 
-# to exclude rather than keep these two TOMSTS. Remove the # to run this. 
-# tms.f_filtered <- mc_filter(tms.f,localities = c("TOMST_14_QHI","TOMST_08_QHI"),reverse = T )
+#Or for a single sensor: 
+mc_plot_raster(mc_filter(tms.f, sensor = "TMS_T3")) 
 
-# Or you could make a time series for a single TOMST. Here is an example with TOMST_09
-mc_plot_line(mc_filter(tms.f, localities = "TOMST_09_QHI")) 
+# Or you could select out specific tomst to remove from your myCLim object. When 
+# For example, we could remove TOMST_14 and TOMST_8 since they look strange.
+# reverse =T tells mc_filter to exclude rather than keep these two TOMSTS.  
+tms.f <- mc_filter(tms.f,localities = c("TOMST_14_QHI","TOMST_08_QHI"),reverse = T )
 
-#### Calculate virtual sensors using physical sensors #### 
+###################################################################################
+############### Calculate virtual sensors using physical sensors ################## 
 # In addition to the four actual sensors on the TOMST, the myClim package also
 # provides a standardized way to calculate virtual sensors by extrapolating from
 # this data. 
@@ -224,33 +227,84 @@ tms.calc <- mc_calc_snow(tms.calc, sensor = "TMS_T2")
 # and increasing the max. Therefore, we use a minimum percentile to calculate min 
 # and max (i.e. the 5th percentile and 95th percentile). 
 
-# Aggregate all those sensors to daily values using percentiles.  
-daily.tms <- mc_agg(tms.calc,fun=c("mean","percentile"),percentiles = c(0.05,0.95),period = "day",min_coverage=1,use_utc = F)
-# Export the object out of the myClim framework so you can view it. 
+################## Aggregate to DAILY values using percentiles ################# 
+daily.tms <- mc_agg(tms.calc,fun=c("mean","percentile"),percentiles = c(0.05,0.95),period = "day",min_coverage=1,use_utc = F) 
+
+# Export the object out of the myClim framework so you can view it.  
+export_dt_daily <- data.table(mc_reshape_long(daily.tms), use_utc = FALSE) %>%
+            select(-serial_number, -use_utc) %>%
+            mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
+            mutate(  # add year column and calculate day of year (doy)
+                year  = year(datetime),
+                month = month(datetime),
+                week  = week(datetime),
+                day   = day(datetime),
+                doy   = yday(datetime)) %>%
+            mutate(sensor_name = case_when(
+                str_detect(sensor_name, "percentile0.05$") ~ str_replace(sensor_name, "percentile.*", "min"), # shortens percentiles to just being called min or max
+                str_detect(sensor_name, "percentile0.95$") ~ str_replace(sensor_name, "percentile.*", "max"),
+                TRUE ~ sensor_name
+                 ))
+                   
+unique(export_dt_daily$sensor_name) #checking that the sensor names were shortened correctly
+view(export_dt_daily)
+
+################## Aggregate to MONTHLY values using percentiles ################# 
+monthly.tms <- mc_agg(tms.calc,fun=c("mean","percentile"),percentiles = c(0.05,0.95),period = "month",min_coverage=1,use_utc = F) 
+
+# Export the object out of the myClim framework so you can view it.  
+export_dt_monthly <- data.table(mc_reshape_long(monthly.tms), use_utc = FALSE) %>%
+  select(-serial_number, -use_utc) %>% # remove these columns
+  mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
+  mutate(  # add year column and calculate day of year (doy)
+    year  = year(datetime),
+    month = month(datetime)) %>%
+  mutate(sensor_name = case_when(
+    str_detect(sensor_name, "percentile0.05$") ~ str_replace(sensor_name, "percentile.*", "min"), # shortens percentiles to just being called min or max
+    str_detect(sensor_name, "percentile0.95$") ~ str_replace(sensor_name, "percentile.*", "max"),
+    TRUE ~ sensor_name
+  ))
+
+unique(export_dt_monthly$sensor_name) #checking that the sensor names were shortened correctly
+view(export_dt_monthly)
+
+###################### Print pre-processed data ###########################
+
+# The data is now ready to be cleaned or processed in whichever way makes the most sense for your research. 
+
+
+
+###################### Working notes #################################
+
+## export the object out of the MC framework
+## This produces the exact same datasheet as the tidyverse style that produces "export_dt_daily"
 export_dt <- data.table(mc_reshape_long(daily.tms),use_utc = F)
+export_dt[, serial_number:=NULL] ##removing useless col
 export_dt[, datetime := ymd(datetime)] ## :=  creates or update a column in data.table, here we swith to a lubridate format with ymd
 export_dt[, month := month(datetime)] ## extracting the month
 export_dt[, day := day(datetime)] ## extracting the day
 export_dt[, week := week(datetime)] ## extracting the week
 
+#Creates an monthly average for each sensor over all years. 
 monthly_averages <- export_dt[,.(mean_value = mean(value,na.rm=T)),
                               by=.(month,sensor_name)] # na.rm=T remove incomplete months 
 
+#Creates a daily average for each sensor over all years. 
 daily_values <- export_dt[,.(mean_value = mean(value,na.rm=T)),
-                              by=.(month,day,sensor_name,height,week)] # na.rm=T remove incomplete days 
+                          by=.(month,day,sensor_name,height,week)] # na.rm=T remove incomplete days 
 
+#Creates a weekly average for each sensor over all years. 
 weekly_values <- export_dt[,.(mean_value = mean(value,na.rm=T)),
-                          by=.(month,sensor_name,height,week)] # na.rm=T remove incomplete days 
+                           by=.(month,sensor_name,height,week)] # na.rm=T remove incomplete days 
 
 daily_values <- daily_values[month == 10,] # get october
 
 weekly_values <- weekly_values[month == 10,] # get october
 
+#uses datatable function to switch to wide view instead of long view for the sensor names
 daily_values <- dcast(daily_values,month+day ~ sensor_name,value.var = 'mean_value',fun.aggregate = mean)
 
 weekly_values <- dcast(weekly_values,month+week ~ sensor_name,value.var = 'mean_value')
 
 View(weekly_values)
 View(daily_values)
-View(daily_values_svg)
-View(daily_values_svg_2)
