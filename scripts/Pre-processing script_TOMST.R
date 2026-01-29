@@ -269,15 +269,22 @@ unique(export_dt_monthly$sensor_name) #checking that the sensor names were short
 view(export_dt_monthly)
 
 ###################### Print pre-processed data ###########################
+# The 2025 dataset has aready been printed to "TOMST-QHI/data/". Please do not print this again. 
+# When a new year of TOMST data is available, use this script to pre-process and save to the "TOMST-QHI/data/" 
+# folder using the same naming convention and just updating the year. 
+
+#write.csv(export_dt_daily, "data/2025_TOMSTdata_preprocessed_daily.csv", row.names = FALSE)
+#write.csv(export_dt_monthly, "data/2025_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
 
 # The data is now ready to be cleaned or processed in whichever way makes the most sense for your research. 
 
 
 
-###################### Working notes #################################
 
+
+###################### Working notes #################################
 ## export the object out of the MC framework
-## This produces the exact same datasheet as the tidyverse style that produces "export_dt_daily"
+## This uses data.table to produce the exact same datasheet as the tidyverse style that produces "export_dt_daily"
 export_dt <- data.table(mc_reshape_long(daily.tms),use_utc = F)
 export_dt[, serial_number:=NULL] ##removing useless col
 export_dt[, datetime := ymd(datetime)] ## :=  creates or update a column in data.table, here we swith to a lubridate format with ymd
