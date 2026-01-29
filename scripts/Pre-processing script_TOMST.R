@@ -16,9 +16,8 @@
 ####################### Download packages  ####################################
 library(myClim) ## logger data reading
 library(foreach) ## efficient loop
-library(stringr) ## efficient character manipulation
 library(lubridate) ## manipulate date_time
-library(tidyverse) #includes ggplot, tidyr, dplyr, etc. 
+library(tidyverse) #includes ggplot, tidyr, dplyr, stringr etc. 
 
 ###################### Begin data upload ######################################
 ###############################################################################
