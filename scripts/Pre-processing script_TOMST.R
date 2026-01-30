@@ -28,12 +28,12 @@ library(data.table) ## Efficient data.frame
 # Since full.names = T, it returns the full name including the relative path. 
 # Change the year to the most recent data year only after ensureing that files have
 # been uploaded with the correct file naming conventions. 
-list_path <- list.files("data/2025/",full.names = T) 
+list_path <- list.files("raw_data/2025/",full.names = T) 
 
 # Scan the same folder but use full.names = F, so it only returns only the 
 # filenames without the directory path (e.g., "TOMST_01_QHI.csv"). 
 # This makes string manipulation easier in the next step.
-list_files <- list.files("data/2025/",full.names = F) 
+list_files <- list.files("raw_data/2025/",full.names = F) 
 
 # Use the stringr package to extract data from the file name. 
 # In this case, we are extracting the "locality" name from each filename, 
@@ -226,7 +226,7 @@ tms.calc <- mc_calc_snow(tms.calc, sensor = "TMS_T2") #sensor name "snow"
 # However, you may not want the true min and max values, as they could be incorrect
 # if, for example, the sun shone directly onto the T3 sensor, artificially heating it
 # and increasing the max. Therefore, we use a minimum percentile to calculate min 
-# and max (i.e. the 5th percentile and 95th percentile). 
+# and max (i.e. the 2.5th percentile and 97.5th percentile). 
 
 ################## Aggregate to DAILY values using percentiles ################# 
 
@@ -319,7 +319,7 @@ view(export_dt_hourly)
 dir.create("export_data")
 write.csv(export_dt_daily, "export_data/2025_TOMSTdata_preprocessed_daily.csv", row.names = FALSE)
 write.csv(export_dt_monthly, "export_data/2025_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
-write.csv(export_dt_hourly, "export_data/2025_TOMSTdata_preprocessed_hourly .csv", row.names = FALSE)
+write.csv(export_dt_hourly, "export_data/2025_TOMSTdata_T3_preprocessed_hourly .csv", row.names = FALSE)
 
 # The data is now ready to be cleaned or processed in whichever way makes the most sense for your research. 
 
