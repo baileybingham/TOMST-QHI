@@ -28,12 +28,12 @@ library(data.table) ## Efficient data.frame
 # Since full.names = T, it returns the full name including the relative path. 
 # Change the year to the most recent data year only after ensureing that files have
 # been uploaded with the correct file naming conventions. 
-list_path <- list.files("raw_data/2025/",full.names = T) 
+list_path <- list.files("data/2025/",full.names = T) 
 
 # Scan the same folder but use full.names = F, so it only returns only the 
 # filenames without the directory path (e.g., "TOMST_01_QHI.csv"). 
 # This makes string manipulation easier in the next step.
-list_files <- list.files("raw_data/2025/",full.names = F) 
+list_files <- list.files("data/2025/",full.names = F) 
 
 # Use the stringr package to extract data from the file name. 
 # In this case, we are extracting the "locality" name from each filename, 
@@ -237,7 +237,7 @@ daily.tms <- mc_agg(tms.calc,
                    #custom_functions = list(mean_t=function(x) mean(x[x%between%  quantile(x,na.rm=T,probs=c(0.025,0.975))],na.rm=T)),
                    period = "day", 
                    min_coverage = 0.95,
-                   percentiles = c(2.5,97.5))
+                   percentiles = c(2.5,97.5),use_utc = F)
 
 # Export the object out of the myClim framework so you can view it.  
 export_dt_daily <- data.table(mc_reshape_long(daily.tms), use_utc = FALSE) %>%
@@ -316,7 +316,7 @@ view(export_dt_hourly)
 # The 2025 dataset has aready been printed to "TOMST-QHI/data/". Please do not print this again. 
 # When a new year of TOMST data is available, use this script to pre-process and save to the "TOMST-QHI/data/" 
 # folder using the same naming convention and just updating the year. 
-dir.create("export_data")
+#dir.create("export_data")
 write.csv(export_dt_daily, "export_data/2025_TOMSTdata_preprocessed_daily.csv", row.names = FALSE)
 write.csv(export_dt_monthly, "export_data/2025_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
 write.csv(export_dt_hourly, "export_data/2025_TOMSTdata_T3_preprocessed_hourly .csv", row.names = FALSE)
