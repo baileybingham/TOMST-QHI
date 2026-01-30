@@ -15,6 +15,7 @@
 
 ####################### Download packages  ####################################
 library(myClim) ## logger data reading
+library (data.table)
 library(foreach) ## efficient loop
 library(lubridate) ## manipulate date_time
 library(tidyverse) #includes ggplot, tidyr, dplyr, stringr etc. 
