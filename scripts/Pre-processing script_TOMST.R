@@ -258,6 +258,30 @@ export_dt_daily <- data.table(mc_reshape_long(daily.tms), use_utc = FALSE) %>%
 unique(export_dt_daily$sensor_name) #checking that the sensor names were shortened correctly
 view(export_dt_daily)
 
+################## Aggregate to WEEKLY values using percentiles ##################
+weekly.tms <- mc_agg(daily.tms,
+                     fun=c("mean","min","max"),
+                     period = "week",min_coverage=0.95,use_utc = F) 
+
+# Export the object out of the myClim framework so you can view it.  
+export_dt_weekly <- data.table(mc_reshape_long(weekly.tms), use_utc = FALSE) %>%
+  select(-serial_number, -use_utc) %>% # remove these columns
+  mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
+  mutate(  
+    year  = year(datetime),
+    month = month(datetime), 
+    week = week(datetime)) %>%
+  mutate(sensor_name = case_when(
+    str_detect(sensor_name, "percentile2.5") ~ str_replace(sensor_name, "percentile2.5", "min"), # shortens percentiles to just being called min or max
+    str_detect(sensor_name, "percentile97.5") ~ str_replace(sensor_name, "percentile97.5", "max"),
+    TRUE ~ sensor_name
+  ))
+
+unique(export_dt_weekly$sensor_name) #checking that the sensor names were shortened correctly
+## monthly naming convention examples: TMS_T3_mean_t_mean weekly mean of the daily mean
+## monthly naming convention examples: TMS_T3_max_t_mean weekly mean of the daily max
+## monthly naming convention examples: TMS_T3_mean_t_max weekly max of the daily mean
+
 ################## Aggregate to MONTHLY values using percentiles ################# 
 monthly.tms <- mc_agg(daily.tms,
                       fun=c("mean","min","max"),
@@ -318,6 +342,7 @@ view(export_dt_hourly)
 # folder using the same naming convention and just updating the year. 
 #dir.create("export_data")
 write.csv(export_dt_daily, "export_data/2025_TOMSTdata_preprocessed_daily.csv", row.names = FALSE)
+write.csv(export_dt_weekly, "export_data/2025_TOMSTdata_preprocessed_weekly.csv", row.names = FALSE)
 write.csv(export_dt_monthly, "export_data/2025_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
 write.csv(export_dt_hourly, "export_data/2025_TOMSTdata_T3_preprocessed_hourly .csv", row.names = FALSE)
 
