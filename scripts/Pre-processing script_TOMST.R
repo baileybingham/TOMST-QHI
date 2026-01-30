@@ -18,7 +18,7 @@ library(myClim) ## logger data reading
 library(foreach) ## efficient loop
 library(lubridate) ## manipulate date_time
 library(tidyverse) #includes ggplot, tidyr, dplyr, stringr etc. 
-
+library(data.table) ## Efficient data.frame
 ###################### Begin data upload ######################################
 ###############################################################################
 ############## Upload TOMST data from most recent year ########################
@@ -228,7 +228,15 @@ tms.calc <- mc_calc_snow(tms.calc, sensor = "TMS_T2") #sensor name "snow"
 # and max (i.e. the 5th percentile and 95th percentile). 
 
 ################## Aggregate to DAILY values using percentiles ################# 
-daily.tms <- mc_agg(tms.calc,fun=c("mean","percentile"),percentiles = c(0.05,0.95),period = "day",min_coverage=1,use_utc = F) 
+
+
+#daily.tms <- mc_agg(tms.calc,fun=c("mean","percentile"),percentiles = c(2.5,97.5),period = "day",min_coverage=1,use_utc = F) 
+daily.tms <- mc_agg(tms.calc, 
+                   fun=c("mean","percentile"),
+                   #custom_functions = list(mean_t=function(x) mean(x[x%between%  quantile(x,na.rm=T,probs=c(0.025,0.975))],na.rm=T)),
+                   period = "day", 
+                   min_coverage = 0.95,
+                   percentiles = c(2.5,97.5))
 
 # Export the object out of the myClim framework so you can view it.  
 export_dt_daily <- data.table(mc_reshape_long(daily.tms), use_utc = FALSE) %>%
@@ -241,8 +249,8 @@ export_dt_daily <- data.table(mc_reshape_long(daily.tms), use_utc = FALSE) %>%
                 day   = day(datetime),
                 doy   = yday(datetime)) %>%
             mutate(sensor_name = case_when(
-                str_detect(sensor_name, "percentile0.05$") ~ str_replace(sensor_name, "percentile.*", "min"), # shortens percentiles to just being called min or max
-                str_detect(sensor_name, "percentile0.95$") ~ str_replace(sensor_name, "percentile.*", "max"),
+                str_detect(sensor_name, "percentile2.5$") ~ str_replace(sensor_name, "percentile.*", "min"), # shortens percentiles to just being called min or max
+                str_detect(sensor_name, "percentile97.5$") ~ str_replace(sensor_name, "percentile.*", "max"),
                 TRUE ~ sensor_name
                  ))
                    
@@ -250,7 +258,9 @@ unique(export_dt_daily$sensor_name) #checking that the sensor names were shorten
 view(export_dt_daily)
 
 ################## Aggregate to MONTHLY values using percentiles ################# 
-monthly.tms <- mc_agg(tms.calc,fun=c("mean","percentile"),percentiles = c(0.05,0.95),period = "month",min_coverage=1,use_utc = F) 
+monthly.tms <- mc_agg(daily.tms,
+                      fun=c("mean","min","max"),
+                      period = "month",min_coverage=0.95,use_utc = F) 
 
 # Export the object out of the myClim framework so you can view it.  
 export_dt_monthly <- data.table(mc_reshape_long(monthly.tms), use_utc = FALSE) %>%
@@ -260,21 +270,55 @@ export_dt_monthly <- data.table(mc_reshape_long(monthly.tms), use_utc = FALSE) %
     year  = year(datetime),
     month = month(datetime)) %>%
   mutate(sensor_name = case_when(
-    str_detect(sensor_name, "percentile0.05$") ~ str_replace(sensor_name, "percentile.*", "min"), # shortens percentiles to just being called min or max
-    str_detect(sensor_name, "percentile0.95$") ~ str_replace(sensor_name, "percentile.*", "max"),
+    str_detect(sensor_name, "percentile2.5") ~ str_replace(sensor_name, "percentile2.5", "min"), # shortens percentiles to just being called min or max
+    str_detect(sensor_name, "percentile97.5") ~ str_replace(sensor_name, "percentile97.5", "max"),
     TRUE ~ sensor_name
   ))
 
 unique(export_dt_monthly$sensor_name) #checking that the sensor names were shortened correctly
+## monthly naming convention examples: TMS_T3_mean_t_mean monthly mean of the daily mean
+## monthly naming convention examples: TMS_T3_max_t_mean monthly mean of the daily max
+## monthly naming convention examples: TMS_T3_mean_t_max monthly max of the daily mean
 view(export_dt_monthly)
+
+
+################## Aggregate to HOURLY values  ################# 
+hourly.tms <- mc_agg(tms.calc,
+                     fun=list(TMS_T3 =c("mean","min","max")), ### to fasten the computation, only selection the sensor of interest
+                     period = "hour",
+                     min_coverage=1,use_utc = T) ##have to use UTC == T for hourly
+
+# Export the object out of the myClim framework so you can view it.  
+export_dt_hourly <- data.table(mc_reshape_long(hourly.tms), use_utc = F) %>%
+  select(-serial_number, -use_utc) %>% # remove these columns
+  mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
+  mutate(  # add year column and calculate day of year (doy)
+    year  = year(datetime),
+    month = month(datetime),
+    week  = week(datetime),
+    day   = day(datetime),
+    doy   = yday(datetime),
+    hour  = hour(datetime)) %>%
+  mutate(sensor_name = case_when(
+    str_detect(sensor_name, "percentile2.5") ~ str_replace(sensor_name, "percentile2.5", "min"), # shortens percentiles to just being called min or max
+    str_detect(sensor_name, "percentile97.5") ~ str_replace(sensor_name, "percentile97.5", "max"),
+    TRUE ~ sensor_name
+  ))
+
+unique(export_dt_hourly$sensor_name) #checking that the sensor names were shortened correctly
+
+view(export_dt_hourly)
+
+
 
 ###################### Print pre-processed data ###########################
 # The 2025 dataset has aready been printed to "TOMST-QHI/data/". Please do not print this again. 
 # When a new year of TOMST data is available, use this script to pre-process and save to the "TOMST-QHI/data/" 
 # folder using the same naming convention and just updating the year. 
-
-#write.csv(export_dt_daily, "data/2025_TOMSTdata_preprocessed_daily.csv", row.names = FALSE)
-#write.csv(export_dt_monthly, "data/2025_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
+dir.create("export_data")
+write.csv(export_dt_daily, "export_data/2025_TOMSTdata_preprocessed_daily.csv", row.names = FALSE)
+write.csv(export_dt_monthly, "export_data/2025_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
+write.csv(export_dt_hourly, "export_data/2025_TOMSTdata_preprocessed_hourly .csv", row.names = FALSE)
 
 # The data is now ready to be cleaned or processed in whichever way makes the most sense for your research. 
 
