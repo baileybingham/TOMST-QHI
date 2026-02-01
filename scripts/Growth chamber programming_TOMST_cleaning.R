@@ -14,12 +14,16 @@ library(lubridate)
 
 ############## Upload Pre-processed DAILY TOMST data ##########################
 getwd() # check working directory
-pproc<- read.csv("data/2025_TOMSTdata_preprocessed_daily.csv") %>%
+pproc.daily<- read.csv("export_data/2025_TOMSTdata_preprocessed_daily.csv") %>%
   mutate(datetime = ymd(datetime))
-unique(pproc$sensor_name)
+unique(pproc.daily$sensor_name)
 
-############# Separate columns, clean data, and pivot to wide  ################
-T3_clean <- pproc %>%
+pproc.weekly<- read.csv("export_data/2025_TOMSTdata_preprocessed_weekly.csv") %>%
+  mutate(datetime = ymd(datetime))
+unique(pproc.weekly$sensor_name)
+
+######## DAILY: Separate columns, clean data, and pivot to wide  ################
+T3daily <- pproc.daily %>%
   #seperate QHI as the location, and the TOMST ID out into seperate columns
   separate_wider_regex( #using regex so that we can account for there being two underscores in locality_id
              locality_id,
@@ -47,10 +51,9 @@ T3_clean <- pproc %>%
     names_from = sensor, 
     # fill measurement columns with values from the 'value' column
     values_from = value)
-
-############################## INITIAL GRAPHS #########################################
-#### Graph of August 2022- August 2025 time series for T_mean ####
-ggplot(T3_clean, aes(x = datetime, y = T3_mean, color=id)) +
+#### DAILY: INITIAL GRAPHS #########################################
+# Graph of August 2022- August 2025 time series for T_mean #
+ggplot(T3daily, aes(x = datetime, y = T3_mean, color=id)) +
   geom_point(alpha = 0.5) +
   geom_hline(yintercept = 0, color = "red", linewidth = 0.5, linetype = "dashed") +
   geom_smooth(method = "loess", span = 0.25, color = "black", linewidth = 1.2, se = FALSE) +
@@ -65,9 +68,9 @@ ggplot(T3_clean, aes(x = datetime, y = T3_mean, color=id)) +
   ) +
   theme_minimal()
 
-#### Graph showing all TOMST data as a single year of temperatures ####
+# Graph showing all TOMST data as a single year of temperatures #
 #Normalize the dates to a single dummy year
-t3_graph <- T3_clean %>%
+t3_graph <- T3daily %>%
   mutate(
     # Make a dummy year in order to overlay dates. 
     dummy_date = as.Date(paste(2024, month(datetime), day(datetime), sep = "-"))
@@ -105,19 +108,149 @@ ggplot(t3_graph, aes(x = dummy_date, y = T3_mean)) +
   ) +
   theme_minimal()
 
-ggplot(chamber_plan, aes(x = week, y = target_temp)) +
+######## DAILY QHI WIDE ########################################################
+QHI_dtay <- T3daily %>%
+  group_by(doy) %>%
+  summarise(
+    # Average of the mean temperatures across all stations
+    QHI_mean = mean(T3_mean, na.rm = TRUE),
+    # The absolute lowest temperature recorded by ANY station that week
+    QHI_min  = min(T3_min, na.rm = TRUE),
+    # The absolute highest temperature recorded by ANY station that week
+    QHI_max  = max(T3_max, na.rm = TRUE),
+    # Recommended: count how many stations contributed to this average
+    n_stations    = sum(!is.na(T3_mean)),
+    .groups = "drop")%>%
+  # remove first and last weeks that don't have a calculated mean
+    filter(is.finite(QHI_mean))
+
+##Graph
+ggplot(QHI_dtay, aes(x = doy, y = QHI_mean)) +
   geom_line(color = "darkred", size = 1) +
-  geom_ribbon(aes(ymin = min_temp, ymax = max_temp), alpha = 0.2, fill = "red") +
-  labs(title = "Proposed Growth Chamber Weekly Temp Cycle",
-       subtitle = "Shaded area represents historical extremes (2022-2025)",
+  geom_ribbon(aes(ymin = QHI_min, ymax = QHI_max), alpha = 0.2, fill = "grey") +
+  geom_hline(yintercept = 0, color = "red", linewidth = 0.5, linetype = "dashed") +
+  labs(title = "QHI mean daily temp by doy",
+       subtitle = "Shaded area represents the min and max temperatures by day (2022-2025)",
        x = "Week of Year", y = "Temperature (°C)") +
   theme_minimal()
 
-# something weird is going on with the Mins and Maxes... Why are they so different from the means?
+
+QHI_dt <- T3daily %>%
+  group_by(datetime) %>%
+  summarise(
+    # Average of the mean temperatures across all stations
+    QHI_mean = mean(T3_mean, na.rm = TRUE),
+    # The absolute lowest temperature recorded by ANY station that week
+    QHI_min  = min(T3_min, na.rm = TRUE),
+    # The absolute highest temperature recorded by ANY station that week
+    QHI_max  = max(T3_max, na.rm = TRUE),
+    # Recommended: count how many stations contributed to this average
+    n_stations    = sum(!is.na(T3_mean)),
+    .groups = "drop")%>%
+  # remove first and last weeks that don't have a calculated mean
+  filter(is.finite(QHI_mean))
+
+##Graph
+ggplot(QHI_dt, aes(x = datetime, y = QHI_mean)) +
+  geom_line(color = "darkred", size = 1) +
+  geom_hline(yintercept = 0, color = "red", linewidth = 0.5, linetype = "dashed") +
+  geom_ribbon(aes(ymin = QHI_min, ymax = QHI_max), alpha = 0.2, fill = "grey") +
+  labs(title = "QHI mean daily temp by doy",
+       subtitle = "Shaded area represents the min and max temperatures by day (2022-2025)",
+       x = "Week of Year", y = "Temperature (°C)") +
+  theme_minimal()
+
+######## WEEKLY: Separate columns, clean data, and pivot to wide  ################
+T3weekly <- pproc.weekly %>%
+  #seperate QHI as the location, and the TOMST ID out into seperate columns
+  separate_wider_regex( #using regex so that we can account for there being two underscores in locality_id
+    locality_id,
+    patterns = c(
+      id = ".*",      # Greedily matches everything until...
+      "_",      # ...the last underscore (discarded)
+      location = ".*") # Everything after that last underscore
+  ) %>%
+  # remove TMS for the sensors that include it
+  mutate(sensor = str_remove(sensor_name, "^TMS_"), .keep = "unused") %>%
+  
+  # remove all sensors other than the air temperature data (T3)
+  filter(sensor %in% c("T3_mean_mean", "T3_min_min", "T3_max_max")) %>%
+  
+  #Rearrange the headings 
+  select(location, id, sensor, datetime, 
+         year, month, week, value) %>%
+  
+  #pivot to wide format
+  pivot_wider(
+    # define id columns
+    id_cols = c(location, id, datetime, year,
+                month, week), 
+    # use values in 'sensor' for new headers
+    names_from = sensor, 
+    # fill measurement columns with values from the 'value' column
+    values_from = value)
+
+######## ALL TOMST (i.e. QHI) WEEKLY: Average all TOMSTS across the island by week #######
+#QHI_wtal = QHI_weekly_temp_all_years
+QHI_wtay <- T3weekly %>%
+  group_by(week) %>%
+  summarise(
+    # Average of the mean temperatures across all stations
+    QHI_mean = mean(T3_mean_mean, na.rm = TRUE),
+    # The absolute lowest temperature recorded by ANY station that week
+    QHI_min  = min(T3_min_min, na.rm = TRUE),
+    # The absolute highest temperature recorded by ANY station that week
+    QHI_max  = max(T3_max_max, na.rm = TRUE),
+    # Recommended: count how many stations contributed to this average
+    n_stations    = sum(!is.na(T3_mean_mean)),
+    .groups = "drop")%>%
+  # remove first and last weeks that don't have a calculated mean
+    filter(is.finite(QHI_mean))
+
+#### REGIONAL WEEKLY GRAPH ###################################################
+ggplot(QHI_wtay, aes(x = week, y = QHI_mean)) +
+  geom_line(color = "darkred", size = 1) +
+  geom_hline(yintercept = 0, color = "red", linewidth = 0.5, linetype = "dashed") +
+  geom_ribbon(aes(ymin = QHI_min, ymax = QHI_max), alpha = 0.2, fill = "grey") +
+  labs(title = "Mean weekly temperature averaged across years on QHI",
+       subtitle = "Shaded area represents weekly max and min temperatures (2022-2025)",
+       x = "Week of Year", y = "Temperature (°C)") +
+  theme_minimal()
+
+#QHI_wtal = QHI_weekly_temp_all_years
+QHI_wt <- T3weekly %>%
+  group_by(year,month,week) %>%
+  summarise(
+    # Create an anchor date for the X-axis (the start of that week)
+    week_date = min(datetime, na.rm = TRUE),
+    # Average of the mean temperatures across all stations
+    QHI_mean = mean(T3_mean_mean, na.rm = TRUE),
+    # The absolute lowest temperature recorded by ANY station that week
+    QHI_min  = min(T3_min_min, na.rm = TRUE),
+    # The absolute highest temperature recorded by ANY station that week
+    QHI_max  = max(T3_max_max, na.rm = TRUE),
+    # Recommended: count how many stations contributed to this average
+    n_stations    = sum(!is.na(T3_mean_mean)),
+    .groups = "drop")%>%
+  # remove first and last weeks that don't have a calculated mean
+  filter(is.finite(QHI_mean))
+
+#### REGIONAL WEEKLY GRAPH ###################################################
+ggplot(QHI_wt, aes(x = week_date, y = QHI_mean)) +
+  geom_line(color = "darkred", size = 1) +
+  geom_ribbon(aes(ymin = QHI_min, ymax = QHI_max), alpha = 0.2, fill = "red") +
+  labs(title = "Mean weekly temperature across QHI (2022-2025)",
+       subtitle = "Shaded area represents max and min temperatures",
+       x = "Week of Year", y = "Temperature (°C)") +
+  theme_minimal()
+
+#################### 
+
+
 ################## Chamber Programming (By week) ##############################
 # 1. Filter for Growing Season (May 15 to Oct 15)
 # Using 'doy' (Day of Year) is often cleaner: May 15 is ~135, Oct 15 is ~288
-df_growing <- T3_clean %>%
+df_growing <- T3daily %>%
   filter(doy >= 135 & doy <= 288) %>%
   drop_na(T3_mean)
 
@@ -135,9 +268,11 @@ weekly_guide <- df_growing %>%
 
 # 3. Visualization: The "Envelope" of your Growing Season
 ggplot(weekly_guide, aes(x = week)) +
- # geom_line(aes(y = avg_daytime_high, color = "Daytime High (Max)"), size = 1) +
-#  geom_line(aes(y = avg_nighttime_low, color = "Nighttime Low (Min)"), size = 1) +
+  geom_line(aes(y = weekly_mean, color = "Weekly Mean"), size = 2) +
+  geom_line(aes(y = avg_daytime_high, color = "Daytime High (Max)"), size = 1) +
+  geom_line(aes(y = avg_nighttime_low, color = "Nighttime Low (Min)"), size = 1) +
   geom_ribbon(aes(ymin = avg_nighttime_low, ymax = avg_daytime_high), alpha = 0.1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
   scale_color_manual(values = c("Daytime High (Max)" = "firebrick", 
                                 "Nighttime Low (Min)" = "darkblue")) +
   labs(title = "Growth Chamber Programming Schedule: Weekly Diurnal Cycle",
@@ -166,116 +301,6 @@ ggplot(weekly_guide, aes(x = week)) +
 
 
 
-
-
-
-
-# 1. Clean Data: Ensure datetime is a date object
-df_clean <- T3_clean %>%
-  mutate(datetime = as.Date(datetime)) %>%
-  drop_na(T3_mean)  # Remove NAs for accurate averages
-
-# 2. Filter for Growing Season (May 15 to Oct 15)
-df_growing <- df_clean %>%
-  filter((month == 5 & day >= 15) | 
-           (month > 5 & month < 10) | 
-           (month == 10 & day <= 15))
-
-# 3. Create Weekly Chamber Profile
-# We group by 'week' (1-52) across ALL years to get a representative average
-chamber_plan <- df_growing %>%
-  group_by(week) %>%
-  summarise(
-    target_temp = mean(T3_mean),
-    min_temp = T3_min,
-    max_temp = T3_max,
-    #sd_temp = sd(T3_mean) # Standard deviation shows year-to-year variability
-  ) %>%
-  arrange(week)
-
-# 4. Visualization for Validation
-ggplot(chamber_plan, aes(x = week, y = target_temp)) +
-  geom_line(color = "darkred", size = 1) +
-  geom_ribbon(aes(ymin = min_temp, ymax = max_temp), alpha = 0.2, fill = "red") +
-  labs(title = "Proposed Growth Chamber Weekly Temp Cycle",
-       subtitle = "Shaded area represents historical extremes (2022-2025)",
-       x = "Week of Year", y = "Temperature (°C)") +
-  theme_minimal()
-
-
-################## INITIAL GRAPHS #############################################
-################## Graph data with all years represented (not averaged) #######
-
-#### This graph is showing a pretty good average temp trend over 3 years (from Aug01 2022 - Aug08 2025)
-
-#################### Average all years of T3 data by DAY ##################################
-# Creates a daily average for each sensor over all years
-daily_values <- t3_mean %>%
-  group_by(location, month, day, doy, sensor) %>%
-  summarize(mean_value = mean(value, na.rm = TRUE), .groups = "drop")
-
-#################### Average all years of T3 by WEEK ##################################
-# Creates a weekly average for each sensor over all years
-weekly_values <- t3_mean %>%
-  group_by(location, id, month, week, sensor) %>%
-  summarize(mean_value = mean(value, na.rm = TRUE), .groups = "drop")
-
-## The weeks are currently falling across multiple months (i.e more than one line per week)
-## Let's make it so the month registers as whatever month the first day of the week falls in
-weekly_values <- grow_seas %>%
-  mutate(datetime = ymd(datetime)) %>% 
-  #Create a "start_month" which is the month that the week started in (according to Julian date)
-  mutate(start_month = month(as.Date(paste0(year, "-01-01")) + (week - 1) * 7)) %>%
-    #Group by the new 'start_month' and other metadata columns
-  group_by(location, start_month, week, sensor) %>% # add id if you want to sort by TOMST too
-  #Summarize as before, the 'month' column is no longer needed in group_by
-  summarize(mean_value = mean(value, na.rm = TRUE), .groups = "drop")
-
-
-###################### Graph Daily Averages ###################################
-daily_values_cropped <- daily_values %>%
-  mutate(
-    # Create a Date object; ggplot needs this for scale_x_date to work
-    date = as.Date(paste(2024, month, day, sep = "-")))  %>%
-    # filter to just the growing season
-    filter(between(date, as.Date("2024-05-15"), as.Date("2024-10-15")))
-  
-
-ggplot(daily_values_cropped, aes(x = date, y = mean_value)) +
-    geom_point(alpha = 0.5) +
-    geom_hline(yintercept = 0, color = "red", linewidth = 0.5, linetype = "dashed") +
-    geom_smooth(method = "loess", color = "blue") +
-    scale_x_date(
-      date_breaks = "1 month",   # Set marks at every month
-      date_labels = "%b %d"      # Format: %b = Abbr Month, %d = Day (e.g., Jan 01)
-    ) +
-    labs(
-      title = "Average daily air temp 2022-2025",
-      x = "Month",
-      y = "Mean Value (°C)"
-    ) +
-    theme_minimal()
-
-
-
-###################### Graph weekly averages ##################################
-
-
-
-
-
-
-
-
-
-
-
-
-################### Working Notes ##############################################
-
-################## Filter May to October ######################################
-grow_seas<- t3_mean %>%
-  filter(month >= 5 & month <= 10)
 
 
 
