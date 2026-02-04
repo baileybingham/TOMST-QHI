@@ -34,3 +34,19 @@ ggsave(file.path("figures","TOMST_QHI_map.jpg"),
        export_map,
        unit = "cm",width = 18,height = 12,scale = 1)
 
+
+## Making a map using ggplot2 and ggspatial
+(export_map <- ggplot(dailytms_sf)+
+    annotation_map_tile(type = "osm",zoomin= 0)+ # open street map tile, zoom moderate
+    geom_sf(pch = 21, size = 3.5,fill ="white",stroke =1, color ="grey10")+
+    scale_fill_viridis_c(limits = c(19,27),option = "plasma",oob = scales::squish)+
+    coord_sf(ylim = range(dailytms$Lat)+ c(-0.01,0.01)*0.125 ,xlim = range(dailytms$Lon)+c(-0.025,0.025)*0.25)+
+    annotation_north_arrow(location = 'tr')+ #nort arrow
+    annotation_scale(location = "br")+# scale
+    labs( title = "Location of the TOMST temperature loggers")
+)
+## Exporting themap without temperature
+ggsave(file.path("figures","TOMST_QHI_map_loggers.jpg"),
+       export_map,
+       unit = "cm",width = 18,height = 12,scale = 1)
+
