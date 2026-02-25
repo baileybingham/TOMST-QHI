@@ -18,7 +18,7 @@ dailytms_sf <- st_as_sf(dailytms,coords = c("Lon","Lat"),crs = st_crs(4326))
 ## interactive fun map (IDK how to embed it in the README)
 dailytms_sf <- dailytms_sf[,c("locality_id","sensor_name","Serial_No",
                               "Location","Elevation","Site Description","Maximum temperature")]
-(export_the_map <- mapview(dailytms_sf,zcol = "Maximum temperature", label = "locality_id"))
+(export_the_map <- mapview(dailytms_sf,zcol = "Maximum temperature", label = "locality_id",layer.name = "T°max 26th of July 2023"))
 mapshot(export_the_map,url = file.path("map","July_max_temp_2023_interactive.html"),selfcontained  = T)
 
 ## Making a map using ggplot2 and ggspatial
