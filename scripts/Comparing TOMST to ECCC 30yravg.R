@@ -8,7 +8,7 @@ library(lubridate)
 library(zoo)
 
 ### IMPORT AGGREGATED DAILY TOMST DATA ###
-eccc<-read.csv("~/1. PhD Research/GitHub/Growth-chambers/export_data/ECCC_dailymeantemp_1996-2025.csv") %>%
+eccc <- read_csv("~/1. PhD Research/GitHub/Growth-chambers/1. Exploring QHI temp data/data/ECCC temp data/combined_ECCC_dailymeantemp_1996-2025.csv") %>%
   drop_na()%>%
   # Read datetime as a date
   mutate(dummydate = ymd(dummydate)) %>% 
@@ -124,30 +124,36 @@ ggplot(cdata, aes(x = dummydate)) +
   #QHI Mean Line
   geom_line(aes(y = QHI_mean), color = "darkred", size = 1) +
   scale_x_date(date_labels = "%b %d", date_breaks = "1 month") +
-  labs(title = "QHI ECCC weather station historical temps compared to 2023 TOMST average, max and min temps",
-       subtitle = "Grey: ECCC (30-yr) | Red: QHI TOMST (2023)",
+  labs(
+      # title = "QHI ECCC weather station historical temps compared to 2023 TOMST average, max and min temps",
+      # subtitle = "Grey: ECCC (30-yr) | Red: QHI TOMST (2023)",
        x = "Date",
-       y = "Temperature (°C)") +
-  theme_minimal()
+       y = "Temperature (°C)")
+
 
 
 # what about with rolling 2023 averages?
 ggplot(cdata, aes(x = dummydate)) +
-  geom_hline(yintercept = 0, color = "red", linewidth = 0.5, linetype = "dashed") +
+  geom_hline(yintercept = 0, color = "grey", linewidth = 0.5, linetype = "dashed") +
   #ECCC Ribbon (Grey Background)
   geom_ribbon(aes(ymin = eccc_min_temp, ymax = eccc_max_temp),fill = "grey", alpha = 0.3) +
   #ECCC Mean Line
   geom_line(aes(y = eccc_mean_temp), color = "grey20", size = 0.8) +
   #QHI actual extremes Ribbon 
-  geom_ribbon(aes(ymin = QHI_min, ymax = QHI_max), fill = "darkred", alpha = 0.3) +
+  geom_ribbon(aes(ymin = QHI_min, ymax = QHI_max), fill = "#CA2100", alpha = 0.3) +
   #QHI Mean rolling average Line
-  geom_line(aes(y = rolling_avg), color = "darkred", size = 1) +
+  geom_line(aes(y = rolling_avg), color = "#CA2100", size = 1) +
   scale_x_date(date_labels = "%b %d", date_breaks = "1 month") +
-  labs(title = "QHI ECCC weather station historical temps compared to 2023 TOMST rolling average and max and min temps",
-       subtitle = "Grey: ECCC (30-yr) | Red: rolling average and actual max and mins of the TOMST (2023)",
-       x = "Date",
-       y = "Temperature (°C)") +
-  theme_minimal()
+  labs(
+      # title = "QHI ECCC weather station historical temps compared to 2023 TOMST rolling average and max and min temps",
+      # subtitle = "Grey: ECCC (30-yr) | Red: rolling average and actual max and mins of the TOMST (2023)",
+       x = "Date (2023)",
+       y = "Temperature (°C)")  
+
+## if making graphs for presentations
+  coord_cartesian(xlim = c(as.Date("2023-04-15"), as.Date("2023-10-15"))) +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
 
 ### Should consider comparing the TOMST 2023 data to the ECCC 2023 data if it exists?
 
