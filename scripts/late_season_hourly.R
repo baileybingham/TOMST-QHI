@@ -24,18 +24,18 @@ export_dt_hourly <- data.table(mc_reshape_long(hourly.tms), use_utc = F) %>%
     TRUE ~ sensor_name
   ))
 
-period_bailey <- export_dt_hourly[sensor_name == "TMS_T3_mean" &  doy %between% c(213,288) & year %in%c(2022:2024) ]
-period_bailey_agg <- period_bailey[ , .(mean_T3 = mean(value,na.rm = T)), by = .(year,doy)]
+period_bailey <- export_dt_hourly[sensor_name == "TMS_T3_mean" &  doy %between% c(226,234) & year %in%c(2022:2024) ]
+period_bailey_agg <- period_bailey[ , .(mean_T3 = mean(value,na.rm = T)), by = .(year,doy,hour,datetime)]
 
 
-(the_plot <- ggplot(period_bailey_agg[,],aes(x = doy, y = mean_T3 ))+
-  geom_line(lwd = 1)+
-  facet_wrap( ~ year)+
+(the_plot <- ggplot(period_bailey_agg[,],aes(x = (hour+1)/24, y = mean_T3 , colour=year))+
+  geom_point()+
+ # geom_line(lwd = 0.5)+
+  facet_wrap( ~ doy)+
   theme_bw()+
-  geom_hline(yintercept = 0,lty = 2)+
+  geom_hline(yintercept = 0,lty = 2))
   #geom_line(data = period_bailey,aes( y = value,group = locality_id),alpha = 0.05)+
-  scale_x_continuous(breaks = seq(from = 210, to = 290, by = 10))+
-  geom_smooth())
+ # scale_x_continuous(breaks = seq(from = 226, to = 234, by = 1)))
 
 library(plotly)
 ### interactive plot
