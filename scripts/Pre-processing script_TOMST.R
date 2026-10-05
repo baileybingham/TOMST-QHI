@@ -211,7 +211,7 @@ tms.calc <- mc_calc_fdd(tms.calc, sensor = "TMS_T3") #sensor name fdd0
 ## Calculate virtual sensor to estimate snow presence using 2 cm air temperature.
 # This works by looking for times when the near ground temperature was 0*C, 
 # meaning that the sensor was under snow. 
-tms.calc <- mc_calc_snow(tms.calc, sensor = "TMS_T2") #sensor name "snow"
+tms.calc <- mc_calc_snow(tms.calc, sensor = "TMS_T2",output_sensor="snow") #sensor name "snow"
 
 #### This is the end of our standardized pre-processing. 
 #### You could export this now, using the following script: 
@@ -329,6 +329,7 @@ export_dt_hourly <- data.table(mc_reshape_long(hourly.tms), use_utc = F) %>%
     str_detect(sensor_name, "percentile97.5") ~ str_replace(sensor_name, "percentile97.5", "max"),
     TRUE ~ sensor_name
   ))
+
 
 unique(export_dt_hourly$sensor_name) #checking that the sensor names were shortened correctly
 
