@@ -8,8 +8,8 @@ hourly.tms <- mc_agg(tms.calc,
                      min_coverage=1,use_utc = T) ##have to use UTC == T for hourly
 
 # Export the object out of the myClim framework so you can view it.  
-export_dt_hourly <- data.table(mc_reshape_long(hourly.tms), use_utc = F) %>%
-  select(-serial_number, -use_utc) %>% # remove these columns
+export_dt_hourly <- data.table(mc_reshape_long(hourly.tms, use_utc = F)) %>%
+  select(-serial_number) %>% # remove these columns
   mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
   mutate(  # add year column and calculate day of year (doy)
     year  = year(datetime),
@@ -47,8 +47,8 @@ view(export_dt_hourly)
 
 ########################################################################################
 the_plot<-ggplot(period_bailey_agg,aes(x = hour, y = mean_T3)) +
-  geom_line(aes(group = interaction(year, doy), colour = factor(doy)), alpha = 0.4, linewidth = 0.5) +
-  geom_point(aes(shape = factor(year), colour = factor(doy)), alpha = 0.8, size = 2) +
+  geom_line(aes(group = interaction(year, doy), colour = factor(doy)), alpha = 0.1, linewidth = 0.5) +
+  geom_point(aes(shape = factor(year), colour = factor(doy)), alpha = 0.1, size = 2) +
     # Smooth average line across all data combined
   geom_smooth(aes(group = 1), method = "gam", formula = y ~ s(x, bs = "cc"), colour = "black", linewidth = 1.3, se = FALSE) +
   scale_x_continuous(
