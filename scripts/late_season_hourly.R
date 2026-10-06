@@ -44,3 +44,25 @@ ggplotly(the_plot)
 unique(export_dt_hourly$sensor_name) #checking that the sensor names were shortened correctly
 
 view(export_dt_hourly)
+
+########################################################################################
+the_plot<-ggplot(period_bailey_agg,aes(x = hour, y = mean_T3)) +
+  geom_line(aes(group = interaction(year, doy), colour = factor(doy)), alpha = 0.4, linewidth = 0.5) +
+  geom_point(aes(shape = factor(year), colour = factor(doy)), alpha = 0.8, size = 2) +
+    # Smooth average line across all data combined
+  geom_smooth(aes(group = 1), method = "gam", formula = y ~ s(x, bs = "cc"), colour = "black", linewidth = 1.3, se = FALSE) +
+  scale_x_continuous(
+    breaks = seq(0, 23, by = 4),
+    labels = paste0(seq(0, 23, by = 4), ":00")
+  ) +
+  geom_hline(yintercept = 0, lty = 2, color = "gray50") +
+  labs(
+    title = "QHI hourly TOMST- Aug 14 - Aug 22",
+    x = "Hour of Day",
+    y = "Mean T3 Temperature (°C)",
+    shape = "Year"
+  ) +
+  theme_bw() +
+  # Hide the massive colour legend since dozens of unique days will clutter the plot
+  guides(colour = "none") + 
+  theme(panel.grid.minor = element_blank())
