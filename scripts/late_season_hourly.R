@@ -24,7 +24,7 @@ export_dt_hourly <- data.table(mc_reshape_long(hourly.tms, use_utc = F)) %>%
     TRUE ~ sensor_name
   ))
 
-period_bailey <- export_dt_hourly[sensor_name == "TMS_T3_mean" &  doy %between% c(226,234) & year %in%c(2022:2024) ]
+period_bailey <- export_dt_hourly[sensor_name == "TMS_T3_mean" &  doy %between% c(272,279) & year %in%c(2022:2024) ]
 period_bailey_agg <- period_bailey[ , .(mean_T3 = mean(value,na.rm = T)), by = .(year,doy,hour,datetime)]
 
 
@@ -46,7 +46,7 @@ unique(export_dt_hourly$sensor_name) #checking that the sensor names were shorte
 view(export_dt_hourly)
 
 ########################################################################################
-the_plot<-ggplot(period_bailey_agg,aes(x = hour, y = mean_T3)) +
+ggplot(period_bailey_agg,aes(x = hour, y = mean_T3)) +
   geom_line(aes(group = interaction(year, doy), colour = factor(doy)), alpha = 0.1, linewidth = 0.5) +
   geom_point(aes(shape = factor(year), colour = factor(doy)), alpha = 0.1, size = 2) +
     # Smooth average line across all data combined
@@ -56,8 +56,9 @@ the_plot<-ggplot(period_bailey_agg,aes(x = hour, y = mean_T3)) +
     labels = paste0(seq(0, 23, by = 4), ":00")
   ) +
   geom_hline(yintercept = 0, lty = 2, color = "gray50") +
+  coord_cartesian(ylim = c(-5, 15)) +
   labs(
-    title = "QHI hourly TOMST- Aug 14 - Aug 22",
+    title = "QHI hourly TOMST- Sept 29–Oct 06",
     x = "Hour of Day",
     y = "Mean T3 Temperature (°C)",
     shape = "Year"
@@ -66,3 +67,14 @@ the_plot<-ggplot(period_bailey_agg,aes(x = hour, y = mean_T3)) +
   # Hide the massive colour legend since dozens of unique days will clutter the plot
   guides(colour = "none") + 
   theme(panel.grid.minor = element_blank())
+
+
+hourly_average <- period_bailey_agg %>%
+  group_by(hour) %>%
+  summarise(
+    avg_temp = mean(mean_T3, na.rm = TRUE)
+  ) %>%
+  arrange(hour)
+
+# View the final table
+print(hourly_averages_2hr)

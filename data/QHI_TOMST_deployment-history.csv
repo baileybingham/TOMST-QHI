@@ -1,0 +1,44 @@
+﻿location,id,sn_2022,notes_2022,sn_2023,replaced_2023,notes_2023,sn_2024,replaced_2024,notes_2024,sn_2025,replaced_2025,notes_2025,sn_2026,replaced_2026,notes_2026
+QHI,TOMST_01,94217254,original deployment,94217254,N,,94217254,N,,94217254,N,,94217254,N,
+QHI,TOMST_02,94217233,original deployment,,N,recovered broken and undownloadeable in June 2023. Not replaced due to ALD at location. , ,N,"Probably not deployed, definitely not recovered. ", ,Y,not deployed; replaced with 96641248 in 2025,96641248,N,
+QHI,TOMST_03,94217231,original deployment,94217231,N,,94217231,N,,94217231,N,,94217231,N,
+QHI,TOMST_04,94217235,original deployment,94217235,N,,94217235,N,,94217235,N,,,Y,Recovered broken and undownloadeable. 
+QHI,TOMST_05,94217232,original deployment,94217232,N,,,unknown,"not recovered, probably not replaced. ",94217246,N,"labelled tomst_5, but serial number is actually tomst 34 from back in 2022",94217246,N,"labelled tomst_5, but serial number is actually tomst 34 from back in 2022"
+QHI,TOMST_06,94217255,original deployment,94217255,N,,94217255,N,,94217255,N,,94217255,N,
+QHI,TOMST_07,94217234,original deployment,94217234,N,,94217234,N,,94217234,N,,,,not listed on back up. Perhaps not collected?
+QHI,TOMST_08,94217253,original deployment,94217253,unknown,,,N,"recovered in 2024, but command files or serial numbers were not documented. Appears to be a continuous dataset from 2022. likely 94217253", ,Y,Not recovered. Probably replaced with unknown in 2025, ,,not listed on back up. Perhaps not collected?
+QHI,TOMST_09,94217251,original deployment,94217251,N,,94217251,N,,94217251,N,,94217251,N,
+QHI,TOMST_10,94217252,original deployment,94217252,N,,94217252,N,,94217252,N,,94217252,N,
+QHI,TOMST_11,94217225,original deployment,24217225,N,"recovered in June, but lost by August. Not replaced due to ALD at site. ", ,N,"Probably not deployed, definitely not recovered. ", ,N,Not deployed., ,,Not deployed. Was once on the spit.
+QHI,TOMST_12,94217224,original deployment,94217224,N,,94217224,N,,94217224,N,,94217224,N,
+QHI,TOMST_13,94217223,original deployment,94217223,N,,94217223,N,,94217223,N,,94217223,N,
+QHI,TOMST_14,94217222,original deployment,94217222,unknown,,,N,"recovered, but observed to be broken on June 13, 2024", ,Y,Not recovered. Probably replaced with unknown in 2025, ,Y,Recovered broken and undownloadeable. 
+QHI,TOMST_15,94217221,original deployment,94217221,N,,94217221,N,,94217221,N,,94217221,N,
+QHI,TOMST_16,94217212,original deployment,94217212,N,,94217212,N,,94217212,N,,94217212,N,
+QHI,TOMST_17,94217213,original deployment,94217213,N,,94217213,N,,94217213,N,,94217213,N,
+QHI,TOMST_18,94217214,original deployment,94217214,N,,94217214,N,,94217214,N,,94217214,N,
+QHI,TOMST_19,94217230,original deployment,94217230,N,,94217230,N,,94217230,N,,94217230,N,
+QHI,TOMST_20,94217229,original deployment,94217229,N,,94217229,N,,94217229,N,,94217229,N,
+QHI,TOMST_21,94217228,original deployment,94217228,N,,94217228,N,,94217228,N,,94217228,N,
+QHI,TOMST_22,94217227,original deployment,94217227,N,,94217227,N,,94217227,N,,94217227,N,
+QHI,TOMST_23,94217226,original deployment,94217226,N,,94217226,N,,94217226,N,,94217226,N,
+QHI,TOMST_24,94217245,original deployment,94217245,N,,94217245,N,,94217245,N,,94217245,N,
+QHI,TOMST_25,94217244,original deployment,94217244,N,,94217244,N,moved due to ALD,94217244,N,,94217244,N,
+QHI,TOMST_26,94217243,original deployment,94217243,N,,94217243,N,,94217243,N,,94217243,N,
+QHI,TOMST_27,94217242,original deployment,94217242,unknown,,,N,"recovered in 2024, but command files or serial numbers were not documented. Appears to be a continuous dataset from 2022. likely 94217242", ,Y,Not recovered. Replaced with 96641242 in Aug 2025,96641242,N,
+QHI,TOMST_28,94217241,original deployment,94217241,N,,94217241,N,,94217241,N,,,N,Not recovered. 
+QHI,TOMST_29,94217240,original deployment,94217240,unknown,,,N,"recovered in 2024, but command files or serial numbers were not documented.Appears to be a continuous dataset from 2022. likely 94217240", ,Y,Not recovered. Probably replaced with 96641245 in 2025,96641245,N,
+QHI,TOMST_30,94217239,original deployment,94217239,N,,94217239,N,,94217239,N,,94217239,N,
+QHI,TOMST_31,94217238,original deployment,94217238,N,,94217238,N,,94217238,N,,94217238,N,
+QHI,TOMST_32,94217237,original deployment,94217237,N,,94217237,N,,94217237,N,,94217237,N,
+QHI,TOMST_33,94217236,original deployment,94217236,N,,94217236,N,,94217236,N,,94217236,N,
+QHI,TOMST_34,94217246,original deployment,94217246,N,,94217246,N,"Recovered, but the next year it seems to have been moved to TOMST 05 based on the serial number?", ,N,Seems to have been moved to Tomst 5???, ,N,"Not recovered or maybe not deployed? Either way, the site is now an ALD"
+QHI,TOMST_35,94217247,original deployment,94217247,N,,94217247,N,,94217247,N,,94217247,N,
+QHI,TOMST_36,94217248,original deployment,94217248,N,,94217248,N,,94217248,N,,94217248,N,
+QHI,TOMST_37,94217249,original deployment,94217249,N,,94217249,N,,94217249,N,,94217249,N,
+QHI,TOMST_38,94217250,original deployment,94217250,N,,94217250,N,,94217250,N,,94217250,N,
+QHI,TOMST_39,94217205,original deployment,94217205,N,,94217205,N,,94217205,N,,94217205,N,
+QHI,TOMST_40,94217204,original deployment,94217204,N,,94217204,N,,94217204,N,,94217204,N,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
