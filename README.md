@@ -37,7 +37,7 @@ RIP in 2025:
 - In 2025, TOMST_11 (serial#: 94217225) was lost to a retrogressive permafrost thaw slump in summer of 2025. The most recent data is from 2024.
 - TOMST_08, TOMST_14, TOMST_27 and TOMST_29 were all not recovered. 
 
-_In August 2025, TOMST_02 and TOMST_29 were replaced with new hardware (TOMST_02: serial#: 96641248, TOMST_29: serial#: 96641245). Note that the script should be updated to cut out the period when these devices were in the factory. _
+_In August 2025, TOMST_02 and TOMST_29 were replaced with new hardware (TOMST_02: serial#: 96641248, TOMST_29: serial#: 96641245). Note that the script should be updated to cut out the period when these devices were in the factory._
 
 RIP in 2026:
 -TOMST_04 (serial#: 94217235) was recovered, but the device was broken and data was undownloadeable. It, alongside TOMST_14 and their associated Phenocams were flooded out. 
