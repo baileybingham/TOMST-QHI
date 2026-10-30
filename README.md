@@ -40,9 +40,9 @@ RIP in 2025:
 _In August 2025, TOMST_02 and TOMST_29 were replaced with new hardware (TOMST_02: serial#: 96641248, TOMST_29: serial#: 96641245). Note that the script should be updated to cut out the period when these devices were in the factory._
 
 RIP in 2026:
--TOMST_04 (serial#: 94217235) was recovered, but the device was broken and data was undownloadeable. It, alongside TOMST_14 and their associated Phenocams were flooded out. 
--TOMST_07 (serial#: 94217234), TOMST_08 (serial#: unknown), TOMST_14 (serial#:unknown) and TOMST_28 (serial#: 94217241) were all not recovered. 
--TOMST_34's hardware was still being used for TOMST_05. No data collected at the TOMST_34 site. This site is now an ALD. 
+- TOMST_04 (serial#: 94217235) was recovered, but the device was broken and data was undownloadeable. It, alongside TOMST_14 and their associated Phenocams were flooded out. 
+- TOMST_07 (serial#: 94217234), TOMST_08 (serial#: unknown), TOMST_14 (serial#:unknown) and TOMST_28 (serial#: 94217241) were all not recovered. 
+- TOMST_34's hardware was still being used for TOMST_05. No data collected at the TOMST_34 site. This site is now an ALD. 
 
 _In August 2026, TOMST_04 and TOMST_14 were replaced with new hardware (serial#: unknown-- update in 2027)._
 
