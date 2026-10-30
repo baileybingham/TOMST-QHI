@@ -27,7 +27,7 @@ RIP in 2023:
 - TOMST_11 (serial#: 94217225) was located on the spit. It was recovered in June 2023, but lost by August. It has never been redeployed.
 
 RIP in 2024: 
--TOMST_05 (serial#:94217232) was not recovered in August 2024. In 2025, it appears that what was formerly TOMST_34 (serial#: 94217246) was transferred to TOMST_05. Unclear if this was on purpose of by mistake. 
+- TOMST_05 (serial#:94217232) was not recovered in August 2024. In 2025, it appears that what was formerly TOMST_34 (serial#: 94217246) was transferred to TOMST_05. Unclear if this was on purpose of by mistake. 
 - TOMST_02 and TOMST_11 were still not replaced. No data for 2024.
 - On June 13 2024 TOMST_14 (serial#: 94217222) was found broken. The data up to that date is available in the 2024 folder.
   
