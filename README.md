@@ -22,11 +22,29 @@ CSVs in the data folder are prepared data, including: \* 2025_TOMSTdata_preproce
 
 ### *TOMST Graveyard*
 
--   In 2023, TOMST_02 (serial#: 94217233) was lost in the ALD at phenology ridge. Therefore the most recent TOMST_02 data is from 2022.
--   On June 13 2024 TOMST_14 (serial#: 94217222) broke. The data up to that date is available in the 2024 folder.
--   In 2025, TOMST_11 (serial#: 94217225) was lost to a retrogressive permafrost thaw slump in summer of 2025. The most recent data is from 2024.
+RIP in 2023: 
+- TOMST_02 (serial#: 94217233) was lost in the ALD at phenology ridge. It was not redeployed until 2025 (serial#: 96641248)
+- TOMST_11 (serial#: 94217225) was located on the spit. It was recovered in June 2023, but lost by August. It has never been redeployed.
 
-As of 2025, no TOMST have been replaced.
+RIP in 2024: 
+-TOMST_05 (serial#:94217232) was not recovered in August 2024. In 2025, it appears that what was formerly TOMST_34 (serial#: 94217246) was transferred to TOMST_05. Unclear if this was on purpose of by mistake. 
+- TOMST_02 and TOMST_11 were still not replaced. No data for 2024.
+- On June 13 2024 TOMST_14 (serial#: 94217222) was found broken. The data up to that date is available in the 2024 folder.
+  
+RIP in 2025: 
+- TOMST_02 and TOMST_11 were still not replaced. No data for 2024.
+- TOMST_34 (serial#: 94217246) was relabelled as TOMST_05. It is unclear if the physical hardware was moved. No other serial number for TOMST_34 was collected. It was probably not deployed in Fall 2025- Summer2026. 
+- In 2025, TOMST_11 (serial#: 94217225) was lost to a retrogressive permafrost thaw slump in summer of 2025. The most recent data is from 2024.
+- TOMST_08, TOMST_14, TOMST_27 and TOMST_29 were all not recovered. 
+
+_In August 2025, TOMST_02 and TOMST_29 were replaced with new hardware (TOMST_02: serial#: 96641248, TOMST_29: serial#: 96641245). Note that the script should be updated to cut out the period when these devices were in the factory. _
+
+RIP in 2026:
+-TOMST_04 (serial#: 94217235) was recovered, but the device was broken and data was undownloadeable. It, alongside TOMST_14 and their associated Phenocams were flooded out. 
+-TOMST_07 (serial#: 94217234), TOMST_08 (serial#: unknown), TOMST_14 (serial#:unknown) and TOMST_28 (serial#: 94217241) were all not recovered. 
+-TOMST_34's hardware was still being used for TOMST_05. No data collected at the TOMST_34 site. This site is now an ALD. 
+
+_In August 2026, TOMST_04 and TOMST_14 were replaced with new hardware (serial#: unknown-- update in 2027)._
 
 ## Scripts
 
