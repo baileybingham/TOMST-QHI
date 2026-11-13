@@ -1,0 +1,203 @@
+,"tomst ID, associated with metadata in metadata file. ",year of field visit (YYYY),Name of team shrub member who downloaded the original file from the tomst,"DDay = download day, i.e. the date each summer that the TOMST was downloaded. If downloaded in both June and August, put the later date. MM-DD-YYYY
+",Serial number of the TOMST that was downloaded on download_day.  ,"Serial number of the new TOMST that was deployed, even if it was the same one downloaded. If NO TOMST was redeployed, mark NA.","Was the tomst hardware replaced with a new device this year, yes=Y or no=N.  ",Notable information about the device from the field team. To make notes about the year overall please visit the QHI_yearly_fieldnotes tab.  ,Name of the folder on the server where the raw data is stored.
+device,site_name,year,downloader,download_day,tomst_sn_download,tomst_sn_deployed,tomst_replaced,device_notes,storage_1
+TOMST,tomst_01,2026,,,94217254,94217254,N,,Arctic1
+TOMST,tomst_02,2026,,,96641248,96641248,N,,Arctic1
+TOMST,tomst_03,2026,BB and MC,08-07-2026,94217231,94217231,N,Intact and with phenocam 3.,Arctic1
+TOMST,tomst_04,2026,BB and ME,NA,NA,?,Y,"Recovered but broken and data unrecovereable due to flooding. It WAS replaced, but we forgot to write down the serial number. Check next year.",Arctic1
+TOMST,tomst_05,2026,,,94217246,94217246,N,,Arctic1
+TOMST,tomst_06,2026,,,94217255,94217255,N,,Arctic1
+TOMST,tomst_07,2026,,,,,?,,Arctic1
+TOMST,tomst_08,2026,,,,,?,,Arctic1
+TOMST,tomst_09,2026,,,94217251,94217251,N,,Arctic1
+TOMST,tomst_10,2026,BB and MC,08-07-2026,94217252,94217252,N,Intact.,Arctic1
+TOMST,tomst_11,2026,,,,,?,,Arctic1
+TOMST,tomst_12,2026,BB and MC,08-02-2026,94217224,94217224,N,Cap was off. Fixed cap with duct tape. ,Arctic1
+TOMST,tomst_13,2026,BB and MC,08-02-2026,94217223,94217223,N,Intact,Arctic1
+TOMST,tomst_14,2026,BB and ME,NA,NA,?,Y,"Not recovered in 2026. Likely washed away due to flooding. It WAS replaced, but we forgot to write down the serial number. Check next year.",Arctic1
+TOMST,tomst_15,2026,BB and MC,08-07-2026,94217221,94217221,N,Intact.,Arctic1
+TOMST,tomst_16,2026,BB and MC,08-07-2026,94217212,94217212,N,Intact.,Arctic1
+TOMST,tomst_17,2026,CN and ME,,94217213,94217213,N,,Arctic1
+TOMST,tomst_18,2026,CN and ME,,94217214,94217214,N,,Arctic1
+TOMST,tomst_19,2026,BB and MC,08-02-2026,94217230,94217230,N,"Intact, data downloaded at 12:52",Arctic1
+TOMST,tomst_20,2026,BB and MC,08-02-2026,94217229,94217229,N,"Intact, data downloaded at 1:42",Arctic1
+TOMST,tomst_21,2026,BB and MC,08-02-2026,94217228,94217228,N,"Broken head, repaired with duct tape. ",Arctic1
+TOMST,tomst_22,2026,BB and MC,08-02-2026,94217227,94217227,N,"Found displaced but mostly intact. The head was cracked, so we repaired it with duct tape. We stuck it back in the ground. ",Arctic1
+TOMST,tomst_23,2026,CN and ME,,94217226,94217226,N,,Arctic1
+TOMST,tomst_24,2026,CN and ME,,94217245,94217245,N,,Arctic1
+TOMST,tomst_25,2026,CN and ME,,94217244,94217244,N,,Arctic1
+TOMST,tomst_26,2026,CN and ME,,94217243,94217243,N,,Arctic1
+TOMST,tomst_27,2026,,,96641242,96641242,N,,Arctic1
+TOMST,tomst_28,2026,,,,,?,,Arctic1
+TOMST,tomst_29,2026,,,,,?,,Arctic1
+TOMST,tomst_30,2026,BB and MC,08-02-2026,94217239,94217239,N,"Broken head, repaired with duct tape. ",Arctic1
+TOMST,tomst_31,2026,BB and MC,08-02-2026,94217238,94217238,N,Intact,Arctic1
+TOMST,tomst_32,2026,BB and MC,08-02-2026,94217237,94217237,N,Intact. ,Arctic1
+TOMST,tomst_33,2026,BB and MC,08-02-2026,94217236,94217236,N,Intact. ,Arctic1
+TOMST,tomst_34,2026,NA,NA,NA,NA,N,Did not exist in 2026 and was not redeployed. ,Arctic1
+TOMST,tomst_35,2026,BB and MC,08-02-2026,94217247,94217247,N,Missing ring that holds the head on. ,Arctic1
+TOMST,tomst_36,2026,BB and ME,08-11-2026,94217248,94217248,N,"Initially thought to be missing, but was eventually recovered right near an ALD.",Arctic1
+TOMST,tomst_37,2026,CN and ME,,94217249,94217249,N,,Arctic1
+TOMST,tomst_38,2026,,,94217250,94217250,N,,Arctic1
+TOMST,tomst_39,2026,,,94217205,94217205,N,,Arctic1
+TOMST,tomst_40,2026,,,94217204,94217204,N,,Arctic1
+TOMST,tomst_01,2025,,08-14-2025,94217254,94217254,N,,Pagniq
+TOMST,tomst_02,2025,NA,NA,NA,96641248,Y,"dead since 2022, but redeployed this year!",Pagniq
+TOMST,tomst_03,2025,,08-14-2025,94217231,94217231,N,,Pagniq
+TOMST,tomst_04,2025,,08-10-2025,94217235,NA,NA,"Unsure what serial number was redeployed as it was not noted, and this device was not recovered/ broken in 2026 without any data being downloaded. ",Pagniq
+TOMST,tomst_05,2025,,08-11-2025,94217246,94217246,N,,Pagniq
+TOMST,tomst_06,2025,,08-11-2025,94217255,94217255,N,,Pagniq
+TOMST,tomst_07,2025,,08-10-2025,94217234,?,?,"Unsure what serial number was redeployed as it was not noted, and this device was not recovered in 2026. Check site in 2027",Pagniq
+TOMST,tomst_08,2025,NA,NA,NA,?,?,Not recovered or downloaded in 2025. Unsure if replaced :( Check site in 2027,Pagniq
+TOMST,tomst_09,2025,,08-10-2025,94217251,94217251,N,,Pagniq
+TOMST,tomst_10,2025,,08-12-2025,94217252,94217252,N,,Pagniq
+TOMST,tomst_11,2025,NA,NA,NA,?,?,Lost in 2023 so did not exist in 2025. Unsure if replaced in 2025:( Check site in 2027,Pagniq
+TOMST,tomst_12,2025,,08-11-2025,94217224,94217224,N,,Pagniq
+TOMST,tomst_13,2025,,08-11-2025,94217223,94217223,N,,Pagniq
+TOMST,tomst_14,2025,NA,NA,NA,?,?,Not redeployed in 2024 due to being broken. Unsure if replaced in 2025. Check site in 2027,Pagniq
+TOMST,tomst_15,2025,,08-08-2025,94217221,94217221,N,,Pagniq
+TOMST,tomst_16,2025,,08-08-2025,94217212,94217212,N,,Pagniq
+TOMST,tomst_17,2025,,08-08-2025,94217213,94217213,N,,Pagniq
+TOMST,tomst_18,2025,,08-08-2025,94217214,94217214,N,,Pagniq
+TOMST,tomst_19,2025,,08-10-2025,94217230,94217230,N,,Pagniq
+TOMST,tomst_20,2025,,08-10-2025,94217229,94217229,N,,Pagniq
+TOMST,tomst_21,2025,,08-10-2025,94217228,94217228,N,,Pagniq
+TOMST,tomst_22,2025,,08-10-2025,94217227,94217227,N,,Pagniq
+TOMST,tomst_23,2025,,08-08-2025,94217226,94217226,N,,Pagniq
+TOMST,tomst_24,2025,,08-08-2025,94217245,94217245,N,,Pagniq
+TOMST,tomst_25,2025,,08-10-2025,94217244,94217244,N,,Pagniq
+TOMST,tomst_26,2025,,08-10-2025,94217243,94217243,N,,Pagniq
+TOMST,tomst_27,2025,NA,NA,NA,96641242,Y,Not recovered or downloaded in 2025. Replaced with 96641242 going forward. ,Pagniq
+TOMST,tomst_28,2025,,08-10-2025,94217241,?,?,Unknown if redeployed. Check site in 2027,Pagniq
+TOMST,tomst_29,2025,NA,NA,NA,?,?,Not recovered or downloaded in 2025. Unsure if replaced :( Check site in 2027,Pagniq
+TOMST,tomst_30,2025,,08-10-2025,94217239,94217239,N,,Pagniq
+TOMST,tomst_31,2025,,08-11-2025,94217238,94217238,N,,Pagniq
+TOMST,tomst_32,2025,,08-11-2025,94217237,94217237,N,,Pagniq
+TOMST,tomst_33,2025,,08-11-2025,94217236,94217236,N,,Pagniq
+TOMST,tomst_34,2025,NA,NA,NA,NA,N,Did not exist in 2025 and was not redeployed. ,Pagniq
+TOMST,tomst_35,2025,,08-10-2025,94217247,94217247,N,,Pagniq
+TOMST,tomst_36,2025,,08-10-2025,94217248,94217248,N,,Pagniq
+TOMST,tomst_37,2025,,08-12-2025,94217249,94217249,N,,Pagniq
+TOMST,tomst_38,2025,,08-08-2025,94217250,94217250,N,,Pagniq
+TOMST,tomst_39,2025,,08-12-2025,94217205,94217205,N,,Pagniq
+TOMST,tomst_40,2025,,08-12-2025,94217204,94217204,N,,Pagniq
+TOMST,tomst_01,2024,"AB, EB",08-12-2024,94217254,94217254,N,Phenology Ridge (Phenocam 1),Arctic1_24
+TOMST,tomst_02,2024,,NA,NA,NA,N,Not redeployed in 2023. Does not exist in 2024,Arctic1_24
+TOMST,tomst_03,2024,"AB, EB",08-12-2024,94217231,94217231,N,Phenology Ridge (Phenocam 3),Arctic1_24
+TOMST,tomst_04,2024,"AB, EB",08-11-2024,94217235,94217235,N,Ice Creek Confluence (Phenocam 4),Arctic1_24
+TOMST,tomst_05,2024,"CN, ME",08-11-2024,94217232,94217246,Y,"Collinson Head, Komakuk (Phenocam 5). Damaged. TOMST 34 hardware was moved to replace it. ",Arctic1_24
+TOMST,tomst_06,2024,"CN, ME",08-11-2024,94217255,94217255,N,"Collinson Head, Herschel (Phenocam 6)",Arctic1_24
+TOMST,tomst_07,2024,"AB, EB",08-11-2024,94217234,94217234,N,"East Ice Creek, East (Phenocam 7)",Arctic1_24
+TOMST,tomst_08,2024,"AB, EB",08-11-2024,94217253,94217253,N,"East Ice Creek, West (Phenocam 8)",Arctic1_24
+TOMST,tomst_09,2024,"CN, ME",08-11-2024,94217251,94217251,N,Mission House (Phenocam 9),Arctic1_24
+TOMST,tomst_10,2024,"AB, EB",08-12-2024,94217252,94217252,N,"Confluence, West, Snowpatch (Phenocam 10)",Arctic1_24
+TOMST,tomst_11,2024,,NA,NA,NA,N,Missing. Died in June of 2023 and was not redeployed according to 2023 field notes. ,Arctic1_24
+TOMST,tomst_12,2024,"AB, EB",08-11-2024,94217224,94217224,N,Bowhead Ridge South,Arctic1_24
+TOMST,tomst_13,2024,"AB, EB",08-11-2024,94217223,94217223,N,Bowhead Ridge North,Arctic1_24
+TOMST,tomst_14,2024,"AB, EB",08-10-2024,94217222,NA,N,Lower East Ice Creek (Phenocam 14); found broken and was NOT redeployed in 2024,Arctic1_24
+TOMST,tomst_15,2024,"AB, EB",08-10-2024,94217221,94217221,N,"Upper West Ice Creek, Herschel (Phenocam 15)",Arctic1_24
+TOMST,tomst_16,2024,"AB, EB",08-10-2024,94217212,94217212,N,"Upper West Ice Creek, Komakuk (Phenocam 16)",Arctic1_24
+TOMST,tomst_17,2024,"AB, EB",08-10-2024,94217213,94217213,N,"West Ice Creek, West (Phenocam 17)",Arctic1_24
+TOMST,tomst_18,2024,"AB, EB",08-10-2024,94217214,94217214,N,"West Ice Creek, East (Phenocam 18)",Arctic1_24
+TOMST,tomst_19,2024,"CN, ME",08-11-2024,94217230,94217230,N,"East Gulley, West",Arctic1_24
+TOMST,tomst_20,2024,"CN, ME",08-11-2024,94217229,94217229,N,"East Gulley, East",Arctic1_24
+TOMST,tomst_21,2024,"CN, ME",08-11-2024,94217228,94217228,N,"Upper East Gulley, West",Arctic1_24
+TOMST,tomst_22,2024,"CN, ME",08-11-2024,94217227,94217227,N,"Upper East Gulley, East",Arctic1_24
+TOMST,tomst_23,2024,"AB, EB",08-10-2024,94217226,94217226,N,"Upper West Ice Creek, East, found out of ground",Arctic1_24
+TOMST,tomst_24,2024,"AB, EB",08-10-2024,94217245,94217245,N,"Upper West Ice Creek, West",Arctic1_24
+TOMST,tomst_25,2024,"AB, EB",08-11-2024,94217244,94217244,N,"Upper East Ice Creek, West",Arctic1_24
+TOMST,tomst_26,2024,"AB, EB",08-11-2024,94217243,94217243,N,"Upper East Ice Creek, East; Tomst was previously moved to avoid slump, per elias picture",Arctic1_24
+TOMST,tomst_27,2024,"CN, ME",08-11-2024,94217242,94217242,N,Floodplain Middle,Arctic1_24
+TOMST,tomst_28,2024,"CN, ME",08-11-2024,94217241,94217241,N,Floodplain East,Arctic1_24
+TOMST,tomst_29,2024,"CN, ME",08-11-2024,94217240,94217240,N,Fox Den Ridge,Arctic1_24
+TOMST,tomst_30,2024,"AB, EB",08-11-2024,94217239,94217239,N,CH uplands,Arctic1_24
+TOMST,tomst_31,2024,"AB, EB",08-11-2024,94217238,94217238,N,CH uplands,Arctic1_24
+TOMST,tomst_32,2024,"AB, EB",08-11-2024,94217237,94217237,N,"near brohead ridge, west",Arctic1_24
+TOMST,tomst_33,2024,"AB, EB",08-11-2024,94217236,94217236,N,"near brohead ridge, west",Arctic1_24
+TOMST,tomst_34,2024,"CN, ME",08-11-2024,94217246,NA,N,"Rescued from slump and redeployed at Phenocam 5, Aug 12 2024",Arctic1_24
+TOMST,tomst_35,2024,"AB, EB",08-11-2024,94217247,94217247,N,CH uplands,Arctic1_24
+TOMST,tomst_36,2024,"AB, EB",08-11-2024,94217248,94217248,N,Owl nest in east ice creek,Arctic1_24
+TOMST,tomst_37,2024,"AB, EB",08-11-2024,94217249,94217249,N,Ridge between the Ice Creeks,Arctic1_24
+TOMST,tomst_38,2024,"AB, EB",08-10-2024,94217250,94217250,N,"Phenology Ridge, South",Arctic1_24
+TOMST,tomst_39,2024,"CN, ME",08-11-2024,94217205,NA,N,Near Ice houses. Found DAMAGED; not redeployed,Arctic1_24
+TOMST,tomst_40,2024,"CN, ME",08-11-2024,94217204,94217204,N,Floodplain North,Arctic1_24
+TOMST,tomst_01,2023,,08-15-2023,94217254,94217254,N,"Tomst hat broken and adjusted, hat replaced 23 June 2023",Amaruk
+TOMST,tomst_02,2023,NA,NA,NA,NA,N,"Tomst broken, removed 23 June 2023. Not possible to download any data from this tomst. ",Amaruk
+TOMST,tomst_03,2023,,08-15-2023,94217231,94217231,N,Tomst okay,Amaruk
+TOMST,tomst_04,2023,,08-14-2023,94217235,94217235,N,"Tomst on an angle, readjusted 23 June 2023, data downloaded 28 June 2023",Amaruk
+TOMST,tomst_05,2023,,08-14-2023,94217232,94217232,N,"Tomst okay, 80% battery and data downloaded on 27 June 2023",Amaruk
+TOMST,tomst_06,2023,,08-14-2023,94217255,94217255,N,"Tomst out of ground, fixed 24 June 2023, data downloaded 27 June 2023 battery at 80%",Amaruk
+TOMST,tomst_07,2023,,08-14-2023,94217234,94217234,N,Tomst okay,Amaruk
+TOMST,tomst_08,2023,,08-14-2023,94217253,94217253,N,"Tomst out of ground, readjusted 23 June 2023",Amaruk
+TOMST,tomst_09,2023,,08-14-2023,94217251,94217251,N,"Tomst okay, 80% battery on 27 June 2023",Amaruk
+TOMST,tomst_10,2023,,08-15-2023,94217252,94217252,N,Tomst okay,Amaruk
+TOMST,tomst_11,2023,,06-27-2023,94217225,NA,N,"recovered in June, but lost by August. Not replaced. GPS point incorrect, is actually paired with phenocam 11",Amaruk
+TOMST,tomst_12,2023,,08-14-2023,94217224,94217224,N,"Tomst out of ground, replaced 24 June 2023",Amaruk
+TOMST,tomst_13,2023,,08-14-2023,94217223,94217223,N,Tomst okay,Amaruk
+TOMST,tomst_14,2023,,08-14-2023,94217222,94217222,N,"Tomst hat off, replaced 23 June 2023, downloaded data 28 June 2023",Amaruk
+TOMST,tomst_15,2023,,08-15-2023,94217221,94217221,N,Tomst okay,Amaruk
+TOMST,tomst_16,2023,,08-15-2023,94217212,94217212,N,Tomst okay,Amaruk
+TOMST,tomst_17,2023,,08-15-2023,94217213,94217213,N,Tomst okay,Amaruk
+TOMST,tomst_18,2023,,08-15-2023,94217214,94217214,N,Tomst okay,Amaruk
+TOMST,tomst_19,2023,,08-14-2023,94217230,94217230,N,"Tomst in ground but hat replaced 24 June 2023, battery 80% on 27 June 2023",Amaruk
+TOMST,tomst_20,2023,,08-14-2023,94217229,94217229,N,"Tomst slightly askew, fixed 24 June 2023, batter 80% and data downloaded 27 June 2023",Amaruk
+TOMST,tomst_21,2023,,08-14-2023,94217228,94217228,N,"Tomst good, Downloaded 27 June 2023, battery 80%",Amaruk
+TOMST,tomst_22,2023,,08-14-2023,94217227,94217227,N,"Tomst good, Downloaded 27 June 2023, battery 80%",Amaruk
+TOMST,tomst_23,2023,,08-15-2023,94217226,94217226,N,"Hat fallen off, replaced 29 june 2023",Amaruk
+TOMST,tomst_24,2023,,08-15-2023,94217245,94217245,N,,Amaruk
+TOMST,tomst_25,2023,,08-14-2023,94217244,94217244,N,"Out of the ground but intact, replaced 28 June 2023",Amaruk
+TOMST,tomst_26,2023,,08-14-2023,94217243,94217243,N,Tomst okay but readjusted (pushed in) 28 June 2023,Amaruk
+TOMST,tomst_27,2023,,08-15-2023,94217242,94217242,N,Tomst okay,Amaruk
+TOMST,tomst_28,2023,,08-14-2023,94217241,94217241,N,"Tomato good, Battery 80%, downloaded on 27 June 2023",Amaruk
+TOMST,tomst_29,2023,,08-14-2023,94217240,94217240,N,"Tomato good, Battery 80% on 27 June 2023",Amaruk
+TOMST,tomst_30,2023,,08-14-2023,94217239,94217239,N,"Tomst good, Downloaded 27 June 2023, battery 80%",Amaruk
+TOMST,tomst_31,2023,,08-14-2023,94217238,94217238,N,"Tomst out of ground, fixed and downloaded data on 27 June 2023, battery 80%",Amaruk
+TOMST,tomst_32,2023,,08-14-2023,94217237,94217237,N,"Hat broken, a bit tilted (couldn’t fix because ground frozen), hat replaced and data downloaded on 27 June 2023, battery 80%",Amaruk
+TOMST,tomst_33,2023,,08-14-2023,94217236,94217236,N,"Hat fallen off, replaced hat and downloaded data 27 June 2023, battery 80%",Amaruk
+TOMST,tomst_34,2023,,08-14-2023,94217246,94217246,N,"Hat fallen off, replaced 24 June 2023, data downloaded 27 June 2033 battery 80%",Amaruk
+TOMST,tomst_35,2023,,08-14-2023,94217247,94217247,N,"Tomst good, Downloaded 27 June 2023, battery 80%",Amaruk
+TOMST,tomst_36,2023,,08-14-2023,94217248,94217248,N,"Tomst good, a bit tilty",Amaruk
+TOMST,tomst_37,2023,,08-15-2023,94217249,94217249,N,Out of ground. Stuck back in 24 June 2023,Amaruk
+TOMST,tomst_38,2023,,08-16-2023,94217250,94217250,N,Tomst okay,Amaruk
+TOMST,tomst_39,2023,,08-16-2023,94217205,94217205,N,"Tomst okay, 80% battery and data downloaded on 28 June 2023",Amaruk
+TOMST,tomst_40,2023,,08-16-2023,94217204,94217204,N,"Tomst okay, 80% battery on 28 June 2023",Amaruk
+TOMST,tomst_01,2022,,08-08-2022,94217254,94217254,N,"Initially deployed July 18th, 2022",Arctic2_22
+TOMST,tomst_02,2022,,08-08-2022,94217233,94217233,N,"Initially deployed July 18th, 2022",Arctic2_22
+TOMST,tomst_03,2022,,08-08-2022,94217231,94217231,N,"Initially deployed July 18th, 2022",Arctic2_22
+TOMST,tomst_04,2022,,08-08-2022,94217235,94217235,N,"Initially deployed July 20th, 2022",Arctic2_22
+TOMST,tomst_05,2022,,08-08-2022,94217232,94217232,N,"Initially deployed July 19th, 2022",Arctic2_22
+TOMST,tomst_06,2022,,08-08-2022,94217255,94217255,N,"Initially deployed July 19th, 2022",Arctic2_22
+TOMST,tomst_07,2022,,08-08-2022,94217234,94217234,N,"Initially deployed July 21st, 2022",Arctic2_22
+TOMST,tomst_08,2022,,08-08-2022,94217253,94217253,N,"Initially deployed July 21st, 2022",Arctic2_22
+TOMST,tomst_09,2022,,08-08-2022,94217251,94217251,N,"Initially deployed July 21st, 2022",Arctic2_22
+TOMST,tomst_10,2022,,08-08-2022,94217252,94217252,N,"Initially deployed July 22nd, 2022",Arctic2_22
+TOMST,tomst_11,2022,,08-08-2022,94217225,94217225,N,"Initially deployed July 25th, 2022",Arctic2_22
+TOMST,tomst_12,2022,,08-08-2022,94217224,94217224,N,"Initially deployed July 25th, 2022",Arctic2_22
+TOMST,tomst_13,2022,,08-08-2022,94217223,94217223,N,"Initially deployed July 25th, 2022",Arctic2_22
+TOMST,tomst_14,2022,,08-08-2022,94217222,94217222,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_15,2022,,08-08-2022,94217221,94217221,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_16,2022,,08-08-2022,94217212,94217212,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_17,2022,,08-08-2022,94217213,94217213,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_18,2022,,08-08-2022,94217214,94217214,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_19,2022,,08-08-2022,94217230,94217230,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_20,2022,,08-08-2022,94217229,94217229,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_21,2022,,08-08-2022,94217228,94217228,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_22,2022,,08-08-2022,94217227,94217227,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_23,2022,,08-08-2022,94217226,94217226,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_24,2022,,08-08-2022,94217245,94217245,N,"Initially deployed July 26th, 2022",Arctic2_22
+TOMST,tomst_25,2022,,08-08-2022,94217244,94217244,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_26,2022,,08-08-2022,94217243,94217243,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_27,2022,,08-08-2022,94217242,94217242,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_28,2022,,08-08-2022,94217241,94217241,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_29,2022,,08-08-2022,94217240,94217240,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_30,2022,,08-08-2022,94217239,94217239,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_31,2022,,08-08-2022,94217238,94217238,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_32,2022,,08-08-2022,94217237,94217237,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_33,2022,,08-08-2022,94217236,94217236,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_34,2022,,08-08-2022,94217246,94217246,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_35,2022,,08-08-2022,94217247,94217247,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_36,2022,,08-08-2022,94217248,94217248,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_37,2022,,08-08-2022,94217249,94217249,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_38,2022,,08-08-2022,94217250,94217250,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_39,2022,,08-08-2022,94217205,94217205,N,"Initially deployed July 27th, 2022",Arctic2_22
+TOMST,tomst_40,2022,,08-08-2022,94217204,94217204,N,"Initially deployed July 27th, 2022",Arctic2_22
