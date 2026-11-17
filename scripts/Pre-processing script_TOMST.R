@@ -26,14 +26,14 @@ library(data.table) ## Efficient data.frame
 
 # Scans the folder data/2025/ and creates a character vector of every file inside. 
 # Since full.names = T, it returns the full name including the relative path. 
-# Change the year to the most recent data year only after ensureing that files have
+# Change the year to the most recent data year only after ensuring that files have
 # been uploaded with the correct file naming conventions. 
-list_path <- list.files("data/2025/",full.names = T) 
+list_path <- list.files("data/2026/",full.names = T) 
 
 # Scan the same folder but use full.names = F, so it only returns only the 
 # filenames without the directory path (e.g., "TOMST_01_QHI.csv"). 
 # This makes string manipulation easier in the next step.
-list_files <- list.files("data/2025/",full.names = F) 
+list_files <- list.files("data/2026/",full.names = F) 
 
 # Use the stringr package to extract data from the file name. 
 # In this case, we are extracting the "locality" name from each filename, 
@@ -74,7 +74,61 @@ if(length(missing_tomst) > 0) {
 
 ################################################################################
 ############### Upload missing files from an older year folder #################
+#2025#
+if(length(missing_tomst) > 0) {
+  message("--- Checking 2025 folder for missing files ---")
+  # Scan the 2025 folder for potential backup files
+  # Change 2025 to reflect the folder year you want
+  path_2025 <- "data/2025/"  
+  list_path_25 <- list.files("data/2025/", full.names = TRUE)
+  list_files_25 <- list.files("data/2025/", full.names = FALSE)
+  
+  # This extracts the IDs just like we did for 2025 and creates a reference table
+  locality_name_25 <- str_extract(list_files_25, "TOMST_[:digit:]+_QHI")
+  
+  files_table_2025 <- data.table(path = list_path_25,
+                                 locality_id = locality_name_25,
+                                 data_format = "TOMST")
+  
+  # Identify which missing IDs are available in 2025
+  found_in_2025 <- intersect(missing_tomst, files_table_2025$locality_id)
+  still_missing <- setdiff(missing_tomst, found_in_2025)
+  
+  # Report Available/Missing
+  if(length(found_in_2025) > 0) {
+    message("The following TOMST IDs are available in 2025.")
+    print(found_in_2025)
+  }
+  if(length(still_missing) > 0) {
+    message("The following TOMST IDs remain missing:")
+    print(still_missing)
+  }
+}
 
+###### If you want to bind the missing files found in the 2025 script,
+###### you can use this script. ONLY DO THIS ONCE or you will add duplicates: 
+files_table_2025[, serial_number := stringr::str_extract(basename(path), "(?<=data_)\\d{8}")]
+if(length(found_in_2025) > 0) {
+  recovered_files <- files_table_2025[locality_id %in% found_in_2025]
+  files_table <- rbind(files_table, recovered_files)
+  files_table <- files_table[order(locality_id)]
+  locality_name <- files_table$locality_id
+  message(paste("Successfully added", nrow(recovered_files), "files from 2025 to the data table."))
+}
+
+####### Check to see what is still missing
+# Identify which expected IDs are NOT present in your files_table
+missing_tomst <- setdiff(expected_ids, files_table$locality_id)
+
+# Print the results to the console
+if(length(missing_tomst) > 0) {
+  message("The following ", length(missing_tomst), " TOMST files are missing:")
+  print(missing_tomst)
+} else {
+  message("All TOMST files (01-40) are present.")
+}
+
+#2024#
 if(length(missing_tomst) > 0) {
   message("--- Checking 2024 folder for missing files ---")
   # Scan the 2024 folder for potential backup files
