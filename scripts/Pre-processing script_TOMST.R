@@ -5,6 +5,28 @@
 #### January 20th, 2026 ###########################
 ###################################################
 
+######### TOMST Processing to do list (Nov 17th, 2026) ########
+# 1. Make sure that new serial numbers are tied to old location ids,
+# that the time in the factory is cut off (any that start with 966 
+# were deployed in 2025)
+
+# 2. Make it so script pulls data from all years, so that TOMST
+# that broke in 2023 (like TOMST 2 and TOMST 11) are still included. 
+# Maybe we should make a new myClim object for each year and merge them?
+
+# 3. Figure out how to account for TOMST 34 (sn:94217246) being moved 
+# to TOMST 5 in 2024. After this TOMST 34 ceases to exist. But as it is currently 
+# written, we get the data from TOMST 34 from 2022-2024 twice (both under the ids for 34
+# and for 5, while the old actual tomst 5 data is ignored. )
+
+# 4. Make sure -81C temps, which indicated that the TOMST was broken, 
+# are treated as NA. ex.TOMST 11 broke June 27, 2023, but recorded -81 
+# until August 
+
+
+
+
+
 #### This script is intended to be used with the most recent year data
 #### available on GitHub, here: https://github.com/baileybingham/TOMST-QHI
 #### Detailed annotations have been provided so that you can understand how 
