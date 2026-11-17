@@ -33,11 +33,12 @@ library(data.table) ## Efficient data.frame
 #------------------------------------------------------------------------------
 
 #==============================================================================
-# The following n=28 TOMST have had a single continuous run of working: #blessed. 
+# The following n=29 TOMST have had a single continuous run of working since the 
+# monitoring program was started in July 2022: #blessed. 
 # TOMST_01, TOMST_03, TOMST_06, TOMST_09, TOMST_10, TOMST_12, TOMST_13, TOMST_15,
 # TOMST_16, TOMST_17, TOMST_18, TOMST_19, TOMST_20, TOMST_21, TOMST_22, TOMST_23, 
-# TOMST_24, TOMST_25, TOMST_26, TOMST_30, TOMST_31, TOMST_32, TOMST_33, TOMST_36, 
-# TOMST_37, TOMST_38, TOMST_39, TOMST_40
+# TOMST_24, TOMST_25, TOMST_26, TOMST_30, TOMST_31, TOMST_32, TOMST_33, TOMST_35, 
+# TOMST_36, TOMST_37, TOMST_38, TOMST_39, TOMST_40
 
 # For all of these TOMST, we can just use the downloaded 2026 data. Yay!
 #==============================================================================
@@ -52,8 +53,11 @@ library(data.table) ## Efficient data.frame
 #------------------------------------------------------------------------------
 
 #==============================================================================
-# The following n= TOMST died young, but had a continuous run until they died: 
-# TOMST_XX, 
+# The following n=11 TOMST died young, but had a continuous run until they died. 
+# Note that some of these were subsequently replaced. We will deal with those
+# separately. 
+# TOMST_02, TOMST_04, TOMST_05, TOMST_07, TOMST_08, TOMST_11, TOMST_14, TOMST_27, 
+# TOMST_28, TOMST_29, TOMST_34
 
 
 
