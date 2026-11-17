@@ -20,7 +20,7 @@
 # and for 5, while the old actual tomst 5 data is ignored. )
 
 # 4. Make sure -81C temps, which indicated that the TOMST was broken, 
-# are treated as NA. ex.TOMST 11 broke June 27, 2023, but recorded -81 
+# are treated as NA. ex.TOMST 14 broke June 13, 2024, but recorded -81 
 # until August 
 
 
@@ -37,11 +37,11 @@
 
 ####################### Download packages  ####################################
 library(myClim) ## logger data reading
-library (data.table)
 library(foreach) ## efficient loop
 library(lubridate) ## manipulate date_time
 library(tidyverse) #includes ggplot, tidyr, dplyr, stringr etc. 
 library(data.table) ## Efficient data.frame
+
 ###################### Begin data upload ######################################
 ###############################################################################
 ############## Upload TOMST data from most recent year ########################
