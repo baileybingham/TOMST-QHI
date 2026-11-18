@@ -8,12 +8,12 @@
 
 #------------------------------------------------------------------------------
 ############################ Download packages  ###############################
+#------------------------------------------------------------------------------
 library(myClim) ## logger data reading
 library(foreach) ## efficient loop
 library(lubridate) ## manipulate date_time
 library(tidyverse) #includes ggplot, tidyr, dplyr, stringr etc. 
 library(data.table) ## Efficient data.frame
-
 
 #==============================================================================
 # In order to account for the unique and confusing histories of each
@@ -26,13 +26,18 @@ library(data.table) ## Efficient data.frame
 # recovered in August 2026. 
 #       5. The TOMST currently residing at the site of TOMST_05, which was first
 # deployed at site TOMST_34, before the hardware was moved in August of 2024. 
+
+# BB discovered this lore through a great deal of detective work, which is 
+# documented in Allyears_TOMST_Fieldnotes.csv
+# Please keep the field notes up to date moving forward. 
 #==============================================================================
 
+#==============================================================================
+######################## CLEANING BASED ON LORE ################################
+#==============================================================================
 #------------------------------------------------------------------------------
 ############ STEP 1: Pre-process the normal, easy TOMST sites ##################
 #------------------------------------------------------------------------------
-
-#==============================================================================
 # The following n=29 TOMST have had a single continuous run of working since the 
 # monitoring program was started in July 2022: #blessed. 
 # TOMST_01, TOMST_03, TOMST_06, TOMST_09, TOMST_10, TOMST_12, TOMST_13, TOMST_15,
@@ -44,11 +49,9 @@ library(data.table) ## Efficient data.frame
 #==============================================================================
 
 
-#------------------------------------------------------------------------------
+#==============================================================================
 ############ STEP 2: Pre-process the TOMST that died young ####################
 #------------------------------------------------------------------------------
-
-#==============================================================================
 # n=11 TOMST died young, but had a continuous run until they died. 
 # Note that some of these were subsequently replaced. We will deal with those
 # separately. 
@@ -65,32 +68,29 @@ library(data.table) ## Efficient data.frame
 #==============================================================================
 
 # These TOMST all need to be cropped to the start date July 27th, 2022. Which is
-# the date when all TOMST were deployed. 
-
-#------------------------------------------------------------------------------
-############ STEP 3: Pre-process the TOMST that were replaced in 2025 #########
-#------------------------------------------------------------------------------
+# the date by which all TOMST were deployed in the field in 2022. 
 
 #==============================================================================
+############ STEP 3: Pre-process the TOMST that were replaced in 2025 #########
+#------------------------------------------------------------------------------
 # The following n=2 TOMST are known to have been replaced in 2025 and were 
 # successfully downloaded in 2026: 
 # TOMST_02, TOMST_27
 
 # *** NOTE **** 
 # There were four TOMST downloads from QHI that were not associated with known 
-# TOMST sites. All of these had serial numbers indicating that they were replaced 
-# in 2025. In 2027, we will check the hardware to determine which site these new
-# TOMST are deployed at. 
+# TOMST sites during the 2026 field season. All of these had serial numbers 
+# indicating that they were replaced in 2025. 
+# In 2027, we will check the hardware to determine which site these new TOMST
+# are deployed at. 
 #==============================================================================
 
 # These TOMST all need to be cropped to the start date August 12th, 2025. Which is
 # the date when all new TOMST were deployed. 
 
-#------------------------------------------------------------------------------
+#==============================================================================
 ####### STEP 4: Deal with the TOMST that was moved from site 34 to site 5 #####
 #------------------------------------------------------------------------------
-
-#==============================================================================
 # The TOMST hardware with the serial number (94217246) was moved from the site called 
 # TOMST_34 to the nearby site called TOMST_05 on ~08-11-2024, when the hardware at 
 # TOMST_05 was discovered to be damaged. 
@@ -106,6 +106,9 @@ library(data.table) ## Efficient data.frame
 
 # Once all TOMST are together, we need to clean the data for logging errors. 
 # -81.12 should equal NA. 
+
+
+
 
 
 
