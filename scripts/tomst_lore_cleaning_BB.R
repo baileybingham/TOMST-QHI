@@ -29,7 +29,7 @@ library(data.table) ## Efficient data.frame
 #==============================================================================
 
 #------------------------------------------------------------------------------
-############ STEP 1: Pull the normal, easy TOMST sites ########################
+############ STEP 1: Pre-process the normal, easy TOMST sites ##################
 #------------------------------------------------------------------------------
 
 #==============================================================================
@@ -44,24 +44,29 @@ library(data.table) ## Efficient data.frame
 #==============================================================================
 
 
-
-
-
-
 #------------------------------------------------------------------------------
-############ STEP 2: Pull the TOMST that died young ###########################
+############ STEP 2: Pre-process the TOMST that died young ####################
 #------------------------------------------------------------------------------
 
 #==============================================================================
-# The following n=11 TOMST died young, but had a continuous run until they died. 
+# n=11 TOMST died young, but had a continuous run until they died. 
 # Note that some of these were subsequently replaced. We will deal with those
 # separately. 
-# TOMST_02, TOMST_04, TOMST_05, TOMST_07, TOMST_08, TOMST_11, TOMST_14, TOMST_27, 
-# TOMST_28, TOMST_29, TOMST_34
+# We will search in the correct year folder for each TOMST. Here are the last 
+# sucessful download dates of each of the dead TOMSTS by year: 
+
+#     2022: TOMST_02 (08-08-2022)
+#     2023: TOMST_11 (06-27-2023), TOMST_05 (08-14-2023)
+#     2024: TOMST_08 (08-11-2024), TOMST_14 (08-10-2024), TOMST_27 (08-11-2024), TOMST_29 (08-11-2024), TOMST_34 (08-11-2024)
+#     2025: TOMST_04 (08-10-2025), TOMST_07 (08-10-2025), TOMST_28 (08-10-2025) 
+
+# For this step, we will look through old data folders to find TOMST that have 
+# died since they were initially deployed in 2022. 
+#==============================================================================
 
 
 #------------------------------------------------------------------------------
-############ STEP 3: Pull the TOMST that were replaced in 2025 ################
+############ STEP 3: Pre-process the TOMST that were replaced in 2025 #########
 #------------------------------------------------------------------------------
 
 #==============================================================================
@@ -74,7 +79,7 @@ library(data.table) ## Efficient data.frame
 # TOMST sites. All of these had serial numbers indicating that they were replaced 
 # in 2025. In 2027, we will check the hardware to determine which site these new
 # TOMST are deployed at. 
-
+#==============================================================================
 
 
 
