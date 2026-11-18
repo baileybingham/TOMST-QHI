@@ -60,6 +60,22 @@ library(data.table) ## Efficient data.frame
 # TOMST_28, TOMST_29, TOMST_34
 
 
+#------------------------------------------------------------------------------
+############ STEP 3: Pull the TOMST that were replaced in 2025 ################
+#------------------------------------------------------------------------------
+
+#==============================================================================
+# The following n=2 TOMST are known to have been replaced in 2025 and were 
+# successfully downloaded in 2026: 
+# TOMST_02, TOMST_27
+
+# *** NOTE **** 
+# There were four TOMST downloads from QHI that were not associated with known 
+# TOMST sites. All of these had serial numbers indicating that they were replaced 
+# in 2025. In 2027, we will check the hardware to determine which site these new
+# TOMST are deployed at. 
+
+
 
 
 
