@@ -64,6 +64,8 @@ library(data.table) ## Efficient data.frame
 # died since they were initially deployed in 2022. 
 #==============================================================================
 
+# These TOMST all need to be cropped to the start date July 27th, 2022. Which is
+# the date when all TOMST were deployed. 
 
 #------------------------------------------------------------------------------
 ############ STEP 3: Pre-process the TOMST that were replaced in 2025 #########
@@ -81,11 +83,29 @@ library(data.table) ## Efficient data.frame
 # TOMST are deployed at. 
 #==============================================================================
 
+# These TOMST all need to be cropped to the start date August 12th, 2025. Which is
+# the date when all new TOMST were deployed. 
+
+#------------------------------------------------------------------------------
+####### STEP 4: Deal with the TOMST that was moved from site 34 to site 5 #####
+#------------------------------------------------------------------------------
+
+#==============================================================================
+# The TOMST hardware with the serial number (94217246) was moved from the site called 
+# TOMST_34 to the nearby site called TOMST_05 on ~08-11-2024, when the hardware at 
+# TOMST_05 was discovered to be damaged. 
+# This was done because TOMST_05 was an important location (ITEX plot and 
+# Phenocam). Long term monitoring at the site of TOMST_34 was discontinued moving 
+# forward. 
+
+# Therefore, all data from before this date needs to be cropped out. 
+# Note that we have the original data from when this device was at site 34, was 
+# already grabbed in the previous step. 
+#==============================================================================
 
 
-
-
-
+# Once all TOMST are together, we need to clean the data for logging errors. 
+# -81.12 should equal NA. 
 
 
 
