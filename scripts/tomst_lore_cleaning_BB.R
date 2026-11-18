@@ -24,7 +24,7 @@ library(data.table) ## Efficient data.frame
 # whenever that might have occurred. 
 #       3. A TOMST that was known to be replaced in 2025 and was successfully 
 # recovered in August 2026. 
-#       5. The TOMST currently residing at the site of TOMST_05, which was first
+#       4. The TOMST currently residing at the site of TOMST_05, which was first
 # deployed at site TOMST_34, before the hardware was moved in August of 2024. 
 
 # BB discovered this lore through a great deal of detective work, which is 
@@ -140,7 +140,7 @@ library(data.table) ## Efficient data.frame
 #==============================================================================
 # n= 39 TOMST downloaded
 
-# From early August 2022, the TOMST were left to continued monitoring until  
+# From early August 2022, the TOMST were left to continue monitoring until  
 # their next download date in late June 2023. By this point, TOMST_02 had died
 # and the data was not recoverable. i.e. only 39 TOMST were successfully  
 # downloaded in 2023. The data was downloaded again in early August, and at this 
