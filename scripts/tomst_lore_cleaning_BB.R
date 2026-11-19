@@ -233,17 +233,22 @@ mc_plot_raster(tms.f)
 mc_plot_line(mc_filter(tms.f, localities =  "TOMST_14")) 
 # Checking the data, the sensor broke on June 12th, 2024, so let's further crop the sensor. 
 
-## HOW DO I CROP ONE SENSOR??? ###
-
-
 # TOMST_08 also has something weird going on with it. 
 mc_plot_line(mc_filter(tms.f, localities =  "TOMST_08")) 
 # From looking at the data, the sensor seems to have broken sometime after 
 # October 12, 2023. Unclear if the later data is good. So let's just remove it. 
 
-# CROP THIS SENSOR TOO!
 
+crop_df_erroneous_values <- data.table(locality_id = c("TOMST_14","TOMST_08"),
+                                       logger_name = c("TMS_1"),
+                                       start = NA , 
+                                       end = c( as.POSIXct("2023-06-11", tz="UTC"), as.POSIXct("2023-11-11", tz="UTC")))
 
+tms.f <- mc_prep_crop(tms.f, crop_table = crop_df_erroneous_values)
+
+## did it work ?
+mc_info(tms.f)[mc_info(tms.f)$locality_id %in% c( "TOMST_14", "TOMST_08"),]
+# yes
 
 
 # Or you could select out specific tomst to remove from your myCLim object. When 
