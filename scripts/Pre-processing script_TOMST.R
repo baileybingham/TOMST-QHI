@@ -243,7 +243,7 @@ mc_info(tms.f)
 mc_info_meta(tms.f) 
 
 # Returns a data frame with the cleaning log, showing what was fixed during the import.
-# Some duplicities, missing and disordered are normal, but it's god to check if any 
+# Some duplicities, missing and disordered are normal, but it's good to check if any 
 # are very high. It is also good to check if there are any missing data that might signal tech issues. 
 mc_info_clean(tms.f) 
 View (mc_info_clean(tms.f)) # Allows you to have a closer look at the data in a bigger window. 
