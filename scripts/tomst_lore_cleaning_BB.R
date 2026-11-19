@@ -233,12 +233,13 @@ mc_plot_raster(tms.f)
 mc_plot_line(mc_filter(tms.f, localities =  "TOMST_14")) 
 # Checking the data, the sensor broke on June 12th, 2024, so let's further crop the sensor. 
 
-## HOW DO I CROP ONE SENSOR???
+## HOW DO I CROP ONE SENSOR??? ###
 
 
-
-
-
+# TOMST_08 also has something weird going on with it. 
+mc_plot_line(mc_filter(tms.f, localities =  "TOMST_08")) 
+# From looking at the data, the sensor seems to have broken sometime after 
+# October 12, 2023. Unclear if the later data is good. So let's just remove it. 
 
 
 
