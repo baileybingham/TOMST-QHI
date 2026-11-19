@@ -200,7 +200,7 @@ mc_info_meta(tms.f)
 mc_info_clean(tms.f) 
 View (mc_info_clean(tms.f)) # Allows you to have a closer look at the data in a bigger window. 
 
-# Uses the myClim package to create TWO raster plots of the data as a time series, 
+# Uses the myClim package to create two raster plots of the data as a time series, 
 # visualizing overall patterns. The first plot shows temp and the second shows soil moisture.
 mc_plot_raster(tms.f) 
 # Look for anything strange-- for example, you will notice that Jan 2022 is showing as well
@@ -208,14 +208,42 @@ mc_plot_raster(tms.f)
 # immediately. These temps are from the factory. 
 
 # Given the above finding, let's crop the TOMST time series to when they were installed.
-# From the time series, we can guess that this was in July 2022-- but we should try to confirm this.  
-tms.f <- mc_prep_crop(tms.f,start = as.POSIXct("2022-07-31", tz="UTC"))  
+# The start dates and end dates of each logger are listed in the deploydates data frame, 
+# so we can use this to crop. 
 
-# You can also make a time series for a single TOMST. Here is an example with TOMST_09
-mc_plot_line(mc_filter(tms.f, localities =  "TOMST_09_QHI")) 
+logger_lookup <- mc_info_logger(tms.f) %>%
+  select(locality_id, serial_number, logger_name) # get the logger name that myClim assigned
 
-#Or for a single sensor: 
-mc_plot_raster(mc_filter(tms.f, sensor = "TMS_T3")) 
+crop_df <- deploydates %>%
+  inner_join(logger_lookup, by = c("locality_id", "serial_number")) %>%
+  transmute(
+    locality_id = locality_id,
+    logger_name = logger_name,
+    start = as.POSIXct(start_date, tz = "UTC"),
+    end   = as.POSIXct(end_date, tz = "UTC") # NAs in end date keep the data until the most recent download
+  )
+
+tms.f <- mc_prep_crop(tms.f, crop_table = crop_df)
+
+#remake the raster, now that the data should be cropped to the correct start dates. 
+mc_plot_raster(tms.f) 
+
+# You can also make a time series for a single TOMST. Let's look at TOMST_14, since
+# it looks a little weird. 
+mc_plot_line(mc_filter(tms.f, localities =  "TOMST_14")) 
+# Checking the data, the sensor broke on June 12th, 2024, so let's further crop the sensor. 
+
+## HOW DO I CROP ONE SENSOR???
+
+
+
+
+
+
+
+
+
+
 
 # Or you could select out specific tomst to remove from your myCLim object. When 
 # For example, we could remove TOMST_14 and TOMST_8 since they look strange.

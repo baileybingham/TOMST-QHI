@@ -43,7 +43,7 @@ QHI,TOMST_40,1,94217204,07-27-2022,,
 QHI,TOMST_02,2,96641248,08-14-2025,,
 QHI,TOMST_27,2,96641242,08-14-2025,,
 QHI,TOMST_05,2,94217246,08-12-2024,,
-QHI,,2,96641206,08-14-2025,,"Collected in 2026, but locality_id was not collected, and so is not currently known. "
-QHI,,2,96641207,08-14-2025,,"Collected in 2026, but locality_id was not collected, and so is not currently known. "
-QHI,,2,96641210,08-14-2025,,"Collected in 2026, but locality_id was not collected, and so is not currently known. "
-QHI,,2,96641245,08-14-2025,,"Collected in 2026, but locality_id was not collected, and so is not currently known. "
+QHI,96641206,2,96641206,08-14-2025,,"Collected in 2026, but locality_id was not collected, and so is not currently known. "
+QHI,96641207,2,96641207,08-14-2025,,"Collected in 2026, but locality_id was not collected, and so is not currently known. "
+QHI,96641210,2,96641210,08-14-2025,,"Collected in 2026, but locality_id was not collected, and so is not currently known. "
+QHI,96641245,2,96641245,08-14-2025,,"Collected in 2026, but locality_id was not collected, and so is not currently known. "
