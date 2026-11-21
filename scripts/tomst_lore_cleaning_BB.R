@@ -1,32 +1,39 @@
 ###############################################################################
-##################  Bailey's Pre-Processing Script for the  ###################
-################## TOMST from Qikiqtaruk - Herschel Island  ###################
-##################         Created November 2026            ###################
-##################  Includes deployment and death dates     ###################
-##################            for these TOMST               ###################
+##################       Pre-Processing Script for the         ###################
+##################  TOMST from Qikiqtaruk - Herschel Island    ###################
+##################                                             ###################
+##################          Created November 2026              ###################
+##################             by Bailey Bingham               ###################
+##################  Based on old script, by Jeremy Borderieux  ###################
+##################                                             ###################
+##################   Includes deployment and death dates       ###################
+##################             for these TOMST                 ###################
 ###############################################################################
 #==============================================================================
 # The goal of this script is to pre-process the most recent year of TOMST 
 # downloads, while also including TOMST that have died in previous years, and 
 # accounting for any known lore about each site and/or device. 
 
-# TOMST histories currently fall into one of the following backgrounds: 
-#       1. A continuous run from July 2022 until August 2026
-#       2. A continuous run from July 2022 until their untimely death, 
+# The script accounts for the following lore, and is well annotated for your
+# learning:  
+#       1. Some TOMST have worked continuously since they were 
+# deployed, from July 2022 until August 2026
+#       2. Some TOMST ran from July 2022 until their untimely death, 
 # whenever that might have occurred. 
-#       3. A TOMST that was known to be replaced in 2025 and was successfully 
-# recovered in August 2026. 
+#       3. Some TOMST were replaced at some point. 
 #       4. The TOMST currently residing at the site of TOMST_05, which was first
 # deployed at site TOMST_34, before the hardware was moved in August of 2024. 
 
 # BB discovered this lore through a great deal of detective work, which is 
 # documented in Allyears_TOMST_Fieldnotes.csv. Field notes should be updated
 # each year, when new TOMST data is downloaded. 
-
 # When TOMST hardware (i.e. a TOMST with a unique serial number) dies or is
 # replaced, please update the end date for any discontinued TOMST, and the 
-# deployment date for any new TOMST. AND make sure the last available download
-# of any dead TOMST is stored in the TOMST graveyard. 
+# deployment date for any new TOMST.  
+
+# This script operates on the ASSUMPTION that all TOMST that have died have had
+# had their final download stored in the TOMST Graveyard. Please make sure this 
+# is up to date before continuing. 
 #==============================================================================
 
 #==============================================================================
@@ -37,7 +44,6 @@ library(foreach) ## efficient loop
 library(lubridate) ## manipulate date_time
 library(tidyverse) #includes ggplot, tidyr, dplyr, stringr etc. 
 library(data.table) ## Efficient data.frame
-
 
 #==============================================================================
 ########################## BUILD FILES_TABLE ############################
@@ -111,12 +117,12 @@ if(length(missing_tomst) > 0) {
 } else {
   message("All TOMST files (01-40) are present.")
 }
-#==============================================================================
+#------------------------------------------------------------------------------
 
-#==============================================================================
+#------------------------------------------------------------------------------
 ########################## GET DEPLOYMENT DATES ##############################
 # We will use this to crop the TOMST data more efficiently later. 
-#==============================================================================
+#------------------------------------------------------------------------------
 # Get metadata information about the deployment record, from the first two rows of the dataframe
 deploydates_meta <- read_csv("data/device_deployment_periods.csv", 
                              n_max = 2, 
@@ -136,14 +142,14 @@ deploydates <-read_csv("data/device_deployment_periods.csv",
                        end_date = col_date(format = "%m-%d-%Y"))) %>%
                        rename(start_date = deploy_date)
 
-#==============================================================================
+#------------------------------------------------------------------------------
 
-#==============================================================================
+#------------------------------------------------------------------------------
 ######################### CREATE LOCALITIES TABLE #############################
 # This is specific to the myClim package and includes our timezone offset and
 # can include elevation (elevation in m), lon_wgs84 (longitude in decimal 
 # degrees), lat_wgs84 (latitude in decimal degrees)
-#==============================================================================
+#------------------------------------------------------------------------------
 
 # Next is a VERY important line, correcting the timezone for each locality ID
 # (which is already linked to the paths of the file). Note that all TOMST are 
@@ -151,7 +157,9 @@ deploydates <-read_csv("data/device_deployment_periods.csv",
 # corrected for, or your days will not be correct. 
 # We correct by geopolitical timezone here, but you could also correct by solar 
 # timezone. You would need to include lat and long to do this. 
-timezone <-  data.table(locality_id = expected_ids ,  
+locality_name <- unique(deploydates$locality_id)
+
+timezone <-  data.table(locality_id = locality_name ,  
                                  tz_offset  = -7*60) # because we are -7 hours (i.e. 7*60 minutes) from UTC
 
 loc <-read_csv("data/TOMST_metadata.csv")%>%
@@ -167,10 +175,10 @@ localities_table <-left_join(timezone, loc)
 
 # clean up workspace
 rm(list = setdiff(ls(), c("files_table", "deploydates", "localities_table")))
-
+#==============================================================================
 
 #==============================================================================
-######################### BEGIN DATA PRE-PROCESSING ###########################
+######################### BEGIN DATA CLEANING ###########################
 #==============================================================================
 
 # Next, join the file paths with the metadata in a single myClim object. 
@@ -235,42 +243,210 @@ mc_plot_line(mc_filter(tms.f, localities =  "TOMST_14"))
 
 # TOMST_08 also has something weird going on with it. 
 mc_plot_line(mc_filter(tms.f, localities =  "TOMST_08")) 
-# From looking at the data, the sensor seems to have broken sometime after 
-# October 12, 2023. Unclear if the later data is good. So let's just remove it. 
+# From looking at the data, the sensor seems to have broken sometime after October 12, 2023. 
+# Unclear if the later data is good. So let's just remove it. 
 
 
 crop_df_erroneous_values <- data.table(locality_id = c("TOMST_14","TOMST_08"),
                                        logger_name = c("TMS_1"),
                                        start = NA , 
-                                       end = c( as.POSIXct("2023-06-11", tz="UTC"), as.POSIXct("2023-11-11", tz="UTC")))
+                                       end = c( as.POSIXct("2024-06-11", tz="UTC"), as.POSIXct("2023-10-11", tz="UTC")))
 
 tms.f <- mc_prep_crop(tms.f, crop_table = crop_df_erroneous_values)
 
-## did it work ?
+## Check that it worked
 mc_info(tms.f)[mc_info(tms.f)$locality_id %in% c( "TOMST_14", "TOMST_08"),]
-# yes
 
-
-# Or you could select out specific tomst to remove from your myCLim object. When 
+# If you wanted to select out specific tomst to remove from your myCLim object, 
+# you can!
 # For example, we could remove TOMST_14 and TOMST_8 since they look strange.
 # reverse =T tells mc_filter to exclude rather than keep these two TOMSTS.  
-tms.f <- mc_filter(tms.f,localities = c("TOMST_14_QHI","TOMST_08_QHI"),reverse = T )
 
-## WE NEED TO CROP TO START AND END DATES. 
+# tms.f <- mc_filter(tms.f,localities = c("TOMST_14_QHI","TOMST_08_QHI"),reverse = T )
+# But I prefer to keep them in. 
 
-# Once all TOMST are together, we need to clean the data for logging errors. 
-# -81.12 should equal NA. 
+# Now  we should finalize this cleaned data by removing the separate lines 
+# for different TOMST hardware using mc_join'
+tms.j <- mc_join(tms.f, comp_sensors = c("TMS_T3"))
+
+mc_info(tms.j)[mc_info(tms.j)$locality_id %in% c( "TOMST_02", "TOMST_27"),] # check that the localities with multiple sensors have been joined. 
+
+# ==============================================================================
+# CONGRATULATIONS! THE TOMST DATA Is NOW CLEAN!
+# The next step is to pre-process it. 
+# ==============================================================================
+
+# ==============================================================================
+################################# OPTIONAL ####################################
+############# Calculate virtual sensors using physical sensors ################
+#-------------------------------------------------------------------------------
+# In addition to the four actual sensors on the TOMST, the myClim package also
+# provides a standardized way to calculate virtual sensors by extrapolating from
+# this data. 
+
+## To do this, we need to specify a soiltype, so we will default to universal for now
+# This will also calculate Volumetric Water Content 
+tms.calc <- mc_calc_vwc(tms.j, soiltype = "universal") #sensor name vwc_moisture
+
+## Calculate virtual sensor with growing and freezing degree days
+tms.calc <- mc_calc_gdd(tms.calc, sensor = "TMS_T3",) #sensor name gdd5
+tms.calc <- mc_calc_fdd(tms.calc, sensor = "TMS_T3") #sensor name fdd0
+
+## Calculate virtual sensor to estimate snow presence using 2 cm air temperature.
+# This works by looking for times when the near ground temperature was 0*C, 
+# meaning that the sensor was under snow. 
+tms.calc <- mc_calc_snow(tms.calc, sensor = "TMS_T2",output_sensor="snow") #sensor name "snow"
+
+#### This is the end of our standardized pre-processing. 
+#### You could export this now, using the following script: 
+#### export_dt <- data.table(mc_reshape_long(tms.calc),use_utc = F)
+#### But this would produce several million rows of data as it is currently
+#### documenting every 15 minutes since July 2022. 
+
+#### You likely will want to aggregate your data by day or month. 
+# ==============================================================================
+
+# ==============================================================================
+############################# Aggregating Data #################################
+#-------------------------------------------------------------------------------
+# When aggregating, you will likely want to produce mean, min, and max values. 
+# However, you may not want the true min and max values, as they could be incorrect
+# if, for example, the sun shone directly onto the T3 sensor, artificially heating it
+# and increasing the max. Therefore, we use a minimum percentile to calculate min 
+# and max (i.e. the 2.5th percentile and 97.5th percentile). 
+
+#--------------------
+# DAILY AGGREGATE
+#--------------------
+# Creating a custom function that takes the trimmed mean of the middle 95% if the data 
+mean_trimmed = function(x) {
+  if (!is.numeric(x)) return(NA_real_)            # skips logical sensors like snow
+  if (mean(!is.na(x)) < 0.95) return(NA_real_)  #only include days with 95% of its data present
+  mean(x[x %between% quantile(x, na.rm = TRUE, probs = c(0.025, 0.975))], na.rm = TRUE)
+}
 
 
+daily.tms <- mc_agg(tms.calc, 
+                    fun=c("mean_trimmed","mean", "percentile"),
+                    custom_functions = list(mean_trimmed=mean_trimmed), 
+                    period = "day", 
+                    min_coverage = 0.95, #only include days with 95% of its data present
+                    percentiles = c(2.5,97.5), #these are just the min and max, but removing extreme outliers. 
+                    use_utc = F) 
+
+# Export the object out of the myClim framework so you can view it.  
+export_dt_daily <- data.table(mc_reshape_long(daily.tms)) %>%
+  select(-serial_number) %>%
+  mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
+  mutate(  # add year column and calculate day of year (doy)
+    year  = year(datetime),
+    month = month(datetime),
+    week  = week(datetime),
+    day   = day(datetime),
+    doy   = yday(datetime)) %>%
+  mutate(sensor_name = case_when(
+    str_detect(sensor_name, "percentile2.5$") ~ str_replace(sensor_name, "percentile.*", "min"), # shortens percentiles to just being called min or max
+    str_detect(sensor_name, "percentile97.5$") ~ str_replace(sensor_name, "percentile.*", "max"),
+    TRUE ~ sensor_name
+  ))
+
+unique(export_dt_daily$sensor_name) #checking that the sensor names were shortened correctly
+view(export_dt_daily)
+
+#--------------------
+# WEEKLY AGGREGATE
+#--------------------
+weekly.tms <- mc_agg(daily.tms,
+                    fun=c("mean","min","max"),
+                    period = "week", 
+                    min_coverage = 0.95, #only include days with 95% of its data present
+                    use_utc = F) 
+
+# Export the object out of the myClim framework so you can view it.  
+export_dt_weekly <- data.table(mc_reshape_long(weekly.tms)) %>%
+  select(-serial_number) %>% # remove these columns
+  mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
+  mutate(  
+    year  = year(datetime),
+    month = month(datetime), 
+    week = week(datetime)) %>%
+  mutate(sensor_name = case_when(
+    str_detect(sensor_name, "percentile2.5") ~ str_replace(sensor_name, "percentile2.5", "min"), # shortens percentiles to just being called min or max
+    str_detect(sensor_name, "percentile97.5") ~ str_replace(sensor_name, "percentile97.5", "max"),
+    TRUE ~ sensor_name
+  ))
+
+unique(export_dt_weekly$sensor_name) #checking that the sensor names were shortened correctly
+## weekly naming convention examples: TMS_T3_mean_trimmed_mean weekly mean of the daily trimmed mean
+
+#--------------------
+# MONTHLY AGGREGATE
+#--------------------
+monthly.tms <- mc_agg(daily.tms,
+                      fun=c("mean","min","max"),
+                      period = "month",
+                      min_coverage=0.95,
+                      use_utc = F) 
+
+# Export the object out of the myClim framework so you can view it.  
+export_dt_monthly <- data.table(mc_reshape_long(monthly.tms)) %>%
+  select(-serial_number) %>% # remove these columns
+  mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
+  mutate(  # add year column and calculate day of year (doy)
+    year  = year(datetime),
+    month = month(datetime)) %>%
+  mutate(sensor_name = case_when(
+    str_detect(sensor_name, "percentile2.5") ~ str_replace(sensor_name, "percentile2.5", "min"), # shortens percentiles to just being called min or max
+    str_detect(sensor_name, "percentile97.5") ~ str_replace(sensor_name, "percentile97.5", "max"),
+    TRUE ~ sensor_name
+  ))
+
+unique(export_dt_monthly$sensor_name) #checking that the sensor names were shortened correctly
+## monthly naming convention examples: TMS_T3_mean_t_mean monthly mean of the daily mean
+## monthly naming convention examples: TMS_T3_max_t_mean monthly mean of the daily max
+## monthly naming convention examples: TMS_T3_mean_t_max monthly max of the daily mean
+
+#--------------------
+# HOURLY AGGREGATE
+#--------------------
+#this one will take a while
+
+hourly.tms <- mc_agg(tms.calc,
+                     fun=list(TMS_T3 =c("mean_trimmed", "mean","min","max")), ### to fasten the computation, only selection the sensor of interest (in this case, TMS_T3)
+                     custom_functions = list(mean_trimmed=mean_trimmed), 
+                     period = "hour",
+                     min_coverage=1,use_utc = T) ##have to use UTC == T for hourly
+
+# Export the object out of the myClim framework so you can view it.  
+export_dt_hourly <- data.table(mc_reshape_long(hourly.tms)) %>%
+  select(-serial_number) %>% # remove these columns
+  mutate(datetime = as.POSIXct(datetime)) %>% # make the date read as a date in lubridate
+  mutate(  # add year column and calculate day of year (doy)
+    year  = year(datetime),
+    month = month(datetime),
+    week  = week(datetime),
+    day   = day(datetime),
+    doy   = yday(datetime),
+    hour  = hour(datetime)) %>%
+  mutate(sensor_name = case_when(
+    str_detect(sensor_name, "percentile2.5") ~ str_replace(sensor_name, "percentile2.5", "min"), # shortens percentiles to just being called min or max
+    str_detect(sensor_name, "percentile97.5") ~ str_replace(sensor_name, "percentile97.5", "max"),
+    TRUE ~ sensor_name
+  ))
 
 
+unique(export_dt_hourly$sensor_name) #checking that the sensor names were shortened correctly
 
+view(export_dt_hourly)
 
+##################### Print pre-processed data ###########################
+# The 2026 dataset has aready been printed to "TOMST-QHI/data/". Please do not print this again. 
+# When a new year of TOMST data is available, use this script to pre-process and save to the "TOMST-QHI/data/" 
+# folder using the same naming convention and just updating the year. 
+#dir.create("export_data")
+write.csv(export_dt_daily, "export_data/2026_TOMSTdata_preprocessed_daily.csv", row.names = FALSE)
+write.csv(export_dt_weekly, "export_data/2026_TOMSTdata_preprocessed_weekly.csv", row.names = FALSE)
+write.csv(export_dt_monthly, "export_data/2026_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
+write.csv(export_dt_hourly, "export_data/2026_TOMSTdata_T3_preprocessed_hourly .csv", row.names = FALSE)
 
-
-
-
-
-
-
-
+# The data is now ready to be cleaned or processed in whichever way makes the most sense for your research. 
