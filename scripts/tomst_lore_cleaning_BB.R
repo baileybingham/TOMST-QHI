@@ -327,7 +327,7 @@ mean_trimmed = function(x) {
 
 
 daily.tms <- mc_agg(tms.calc, 
-                    fun=c("mean_trimmed","mean", "percentile"),
+                    fun=list(TMS_T3 =c("mean_trimmed","mean", "percentile")), #just print TMS_T3 sensor to reduce size
                     custom_functions = list(mean_trimmed=mean_trimmed), 
                     period = "day", 
                     min_coverage = 0.95, #only include days with 95% of its data present
@@ -444,7 +444,7 @@ view(export_dt_hourly)
 # When a new year of TOMST data is available, use this script to pre-process and save to the "TOMST-QHI/data/" 
 # folder using the same naming convention and just updating the year. 
 #dir.create("export_data")
-write.csv(export_dt_daily, "export_data/2026_TOMSTdata_preprocessed_daily.csv", row.names = FALSE)
+write.csv(export_dt_daily, "export_data/2026_TOMSTdata_T3_preprocessed_daily.csv", row.names = FALSE)
 write.csv(export_dt_weekly, "export_data/2026_TOMSTdata_preprocessed_weekly.csv", row.names = FALSE)
 write.csv(export_dt_monthly, "export_data/2026_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
 write.csv(export_dt_hourly, "export_data/2026_TOMSTdata_T3_preprocessed_hourly .csv", row.names = FALSE)
