@@ -1,6 +1,7 @@
 ###############################################################################
 ##################       Pre-Processing Script for the         ###################
 ##################  TOMST from Qikiqtaruk - Herschel Island    ###################
+##################                  Using MyClim               ###################
 ##################                                             ###################
 ##################          Created November 2026              ###################
 ##################             by Bailey Bingham               ###################
@@ -444,9 +445,9 @@ view(export_dt_hourly)
 # When a new year of TOMST data is available, use this script to pre-process and save to the "TOMST-QHI/data/" 
 # folder using the same naming convention and just updating the year. 
 #dir.create("export_data")
-write.csv(export_dt_daily, "export_data/2026_TOMSTdata_T3_preprocessed_daily.csv", row.names = FALSE)
-write.csv(export_dt_weekly, "export_data/2026_TOMSTdata_preprocessed_weekly.csv", row.names = FALSE)
-write.csv(export_dt_monthly, "export_data/2026_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
-write.csv(export_dt_hourly, "export_data/2026_TOMSTdata_T3_preprocessed_hourly .csv", row.names = FALSE)
+#write.csv(export_dt_daily, "export_data/2026_TOMSTdata_T3_preprocessed_daily.csv", row.names = FALSE) 
+#write.csv(export_dt_weekly, "export_data/2026_TOMSTdata_preprocessed_weekly.csv", row.names = FALSE)
+#write.csv(export_dt_monthly, "export_data/2026_TOMSTdata_preprocessed_monthly.csv", row.names = FALSE)
+#write.csv(export_dt_hourly, "export_data/2026_TOMSTdata_T3_preprocessed_hourly .csv", row.names = FALSE)
 
 # The data is now ready to be cleaned or processed in whichever way makes the most sense for your research. 
