@@ -11,7 +11,7 @@ df <- read_csv("export_data/2026_TOMSTdata_preprocessed_monthly.csv")
 
 #filter to just the T3 trimmed mean and May-Sept
 df_t3 <- df %>%
-  filter(locality_id %in% sprintf("TOMST_%02d", 1:20),
+  filter(locality_id %in% sprintf("TOMST_%02d", 1:40),
          sensor_name == "TMS_T3_mean_trimmed_mean",
          month %in% 5:9) %>%
   mutate(sensor_name = "T3_mean_t")
