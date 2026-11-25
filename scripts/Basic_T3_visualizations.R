@@ -23,8 +23,14 @@ tms.t3 <- read_csv("export_data/2026_TOMSTdata_T3_preprocessed_daily.csv")%>%
     # Common-year date so all years overlay on one axis labelled by month.
     # use 2000, because it is a leap year
     md = as_date(format(date, "2000-%m-%d"))
-  )
+  )%>%
+  filter(locality_id %in% sprintf("TOMST_%02d", 1:40)) #filter to just the 40 TOMST
 head (tms.t3)
+
+t3_mean <- tms.t3 %>%
+  filter(sensor_name == "TMS_T3_mean_trimmed",
+       month %in% 5:9) %>%
+  mutate(sensor_name = "T3_mean_t")
 
 ############# Create a heat map of temps across deployment history #############
 tms.t3 %>%
@@ -66,6 +72,15 @@ ggplot() +
     date_labels = "%b %Y"  ) +
   scale_y_discrete(limits = rev) +
   labs(title = "TOMST deployment history",
-       subtitle = "Blue = data present, red X = sensor died",
        x = NULL, y = NULL) +
   theme(axis.text.y = element_text(size = 8))
+
+############### Line Graph of All Years ########################################
+# compare seasons across years
+ggplot(t3_mean, aes(x = md, y = value, colour = year, group = year)) +
+  #geom_line(na.rm = TRUE) +
+  geom_point(size = 1, na.rm = TRUE) +
+  #facet_wrap(~ locality_id, ncol = 5) +
+  labs(x = "Date", y = "Trimmed T3 mean (°C)") +
+  theme_bw() +
+  theme(legend.position = "bottom")
