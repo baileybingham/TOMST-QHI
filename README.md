@@ -14,6 +14,8 @@ The TOMST were initially deployed in July 2022 at 40 sites. TOMST begin collecte
 
 Following July 2022, the TOMST have remained deployed in the field and members of Team Shrub download the data from the TOMST each August. Therefore, each 'year' folder doesn't just represent data from that year, but rather the year that the data was downloaded from the TOMST and includes that year's summer field season and all years before it). If a TOMST is lost or damaged before the next download, all data is lost and so previous years downloads are retained to act as a backup. Please see the TOMST Graveyard for details of when TOMST were lost/ damaged and if/when they were replaced.
 
+![](figures/TOMST_deployment_history.png)
+
 For details about the data downloaded each year, and any known information about the sensors, please check the readme.md in data/ year.
 
 All data in the "year" folders is stored as raw data from the TOMST. Scripts for pre-processing and data organization are available in the Scripts section below.
