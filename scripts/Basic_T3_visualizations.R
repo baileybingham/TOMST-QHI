@@ -1,11 +1,11 @@
 ###############################################################################
-##################                                             ###################
-##################             Basic Figures for the           ###################
-##################  TOMST from Qikiqtaruk - Herschel Island    ###################
-##################                                             ###################
-##################          Created November 2026              ###################
-##################             by Bailey Bingham               ###################
-##################                                             ###################
+##################                                                ###################
+##################          Basic Figures for the T3 Daily        ###################
+##################  TOMST Data from Qikiqtaruk - Herschel Island  ###################
+##################                                                ###################
+##################            Created November 2026               ###################
+##################               by Bailey Bingham                ###################
+##################                                                ###################
 ###############################################################################
 
 
@@ -75,7 +75,7 @@ ggplot() +
        x = NULL, y = NULL) +
   theme(axis.text.y = element_text(size = 8))
 
-############### Line Graph of All Years ########################################
+############### Scatterplot of All Years ########################################
 # compare seasons across years
 ggplot(t3_mean, aes(x = md, y = value, colour = year, group = year)) +
   #geom_line(na.rm = TRUE) +
@@ -84,3 +84,6 @@ ggplot(t3_mean, aes(x = md, y = value, colour = year, group = year)) +
   labs(x = "Date", y = "Trimmed T3 mean (°C)") +
   theme_bw() +
   theme(legend.position = "bottom")
+
+
+############## Line Graph of rolling avg for 2023-2025 #########################

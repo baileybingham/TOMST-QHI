@@ -20,41 +20,32 @@ eccc <- read_csv("~/1. PhD Research/GitHub/Growth-chambers/1. Exploring QHI temp
     eccc_min_temp = Min_Temp
   )
 
-tomst<-read.csv("~/1. PhD Research/GitHub/TOMST-QHI/export_data/2025_TOMSTdata_preprocessed_daily.csv") %>%
+tomst<-read_csv("export_data/2026_TOMSTdata_T3_preprocessed_daily.csv") %>%
+  filter(locality_id %in% sprintf("TOMST_%02d", 1:40)) %>% #filter to just the 40 TOMST
   # Read datetime as a date
   mutate(datetime = ymd(datetime))%>%
-  #seperate QHI as the location, and the TOMST ID out into seperate columns
-  separate_wider_regex( #using regex so that we can account for there being two underscores in locality_id
-    locality_id,
-    patterns = c(
-      id = ".*",      # Greedily matches everything until...
-      "_",      # ...the last underscore (discarded)
-      location = ".*") # Everything after that last underscore
-  ) %>%
-  # remove TMS for the sensors that include it
+    # remove TMS for the sensors that include it
   mutate(sensor = str_remove(sensor_name, "^TMS_"), .keep = "unused") %>%
   # remove all sensors other than the air temperature data (T3)
-  filter(sensor %in% c("T3_mean", "T3_min", "T3_max")) %>%
-  # filter to only include 2023 data
-  filter(year %in% ("2023")) %>%
+  filter(sensor %in% c("T3_mean_trimmed", "T3_min", "T3_max")) %>%
   #Rearrange the headings 
-  select(location, id, sensor, datetime, 
+  select(locality_id, sensor, datetime, 
          year, month, week, day, doy, value)  %>%
   #pivot to wide format
   pivot_wider(
     # define id columns
-    id_cols = c(location, id, datetime, year,
+    id_cols = c(locality_id, datetime, year,
                 month, week, day, doy,), 
     # use values in 'sensor' for new headers
     names_from = sensor, 
     # fill measurement columns with values from the 'value' column
     values_from = value)
 
-### Graph all 2023 TOMSTS onto one graph, to get an idea of the range
-ggplot(tomst, aes(x = datetime, y = T3_mean, color = id)) +
+### Graph all TOMSTS onto one graph, to get an idea of the range
+ggplot(tomst, aes(x = datetime, y = T3_mean_trimmed, color = locality_id)) +
   geom_line(alpha = 0.5) + 
   theme_minimal() +
-  facet_wrap(~id)+
+  facet_wrap(~locality_id)+
   labs(title = "Time Series by Sensor ID",
        x = "Date",
        y = "Mean Temperature (T3)") 
@@ -64,50 +55,45 @@ ggplot(tomst, aes(x = datetime, y = T3_mean, color = id)) +
 
 ### Average all stations to get one daily average for the whole island ###
 tomst_daily_avg <- tomst %>%
-  group_by(datetime) %>%
+  mutate(  # add year column and calculate day of year (doy)
+  year  = year(datetime),
+  month = month(datetime),
+  day   = day(datetime),
+  doy   = yday(datetime)) %>%
+  group_by(year, doy, datetime) %>%
   summarise(
     # Average of the mean temperatures across all stations
-    QHI_mean = mean(T3_mean, na.rm = TRUE),
+    QHI_mean = mean(T3_mean_trimmed, na.rm = TRUE),
     # The absolute lowest temperature recorded by ANY station that week
-    QHI_min  = min(T3_min, na.rm = TRUE),
+    QHI_min  = median (T3_min, na.rm = TRUE),
     # The absolute highest temperature recorded by ANY station that week
-    QHI_max  = max(T3_max, na.rm = TRUE))
+    QHI_max  = median (T3_max, na.rm = TRUE))
 
 ### Graph the average to see if it makes sense
-ggplot(tomst_daily_avg, aes(x = datetime, y = QHI_mean)) +
+ggplot(tomst_daily_avg, aes(x = doy, y = QHI_mean)) +
   geom_line(alpha = 0.5) + 
   geom_hline(yintercept = 0, color = "red", linewidth = 0.5, linetype = "dashed") +
   geom_ribbon(aes(ymin = QHI_min, ymax = QHI_max), alpha = 0.2, fill = "grey") +
+  #facet_grid(year~.)+
   scale_x_date(
     date_breaks = "1 month",   # Set marks at every month
-    date_labels = "%b %Y"      # Format: %b = Abbr Month, %y = year (e.g., Jan 22)
+    date_labels = "%b"      # Format: %b = Abbr Month, %y = year (e.g., Jan 22)
   ) +
   theme_minimal() +
-  labs(title = "QHI average temperature 2023",
+  labs(title = "QHI average temperature",
        subtitle = "Grey shaded area shows the extreme temperatures for each day",
        x = "Date",
        y = "Mean Daily Air Temperature") 
-
 ### Calculate rolling average
 rollavg <-tomst_daily_avg %>%
   mutate(
     # Rolling Average: Smoothes data, but lowers peaks
-    rolling_avg = rollmean(QHI_mean, k = 6, fill = NA, align = "center"),
+    rolling_avg = rollmean(QHI_mean, k = 7, fill = NA, align = "center"),
     # Rolling Max: Preserves the heatwave intensity for the week
-    rolling_max = rollmax(QHI_max, k = 6, fill = NA, align = "center"),
+    rolling_max = rollmax(QHI_max, k = 7, fill = NA, align = "center"),
     # Rolling Min: Captures the coolest dip of the week
-    rolling_min = rollapply(QHI_min, width = 6, FUN = min, fill = NA, align = "center"))
+    rolling_min = rollapply(QHI_min, width = 7, FUN = min, fill = NA, align = "center"))
 
-rollavg %>%
-  pivot_longer(cols = c(rolling_avg, rolling_max, rolling_min), 
-               names_to = "Method", values_to = "Temp") %>%
-  ggplot(aes(x = datetime, y = Temp, color = Method)) +
-  geom_line(size = 1) +
-  geom_point() +
-  labs(title = "Bead Pattern Comparison: Avg vs Max",
-       subtitle = "Rolling Max preserves heatwave peaks for better visualization",
-       y = "Degrees (C)") +
-  theme_minimal()
 
 #### Combine TOMST with ECCC to compare 2023 to the 30 year average
 cdata<-cbind(eccc, rollavg)
